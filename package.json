@@ -9,6 +9,7 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "dependencies": {
+    "normalize.css": "^8.0.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "react-redux": "^5.0.7",
@@ -22,7 +23,10 @@
     "electron": "2.0.0",
     "electron-builder": "^20.11.1",
     "electron-devtools-installer": "^2.2.4",
+    "electron-timber": "^0.5.1",
     "electron-webpack": "^2.0.1",
+    "node-sass": "^4.9.3",
+    "sass-loader": "^7.1.0",
     "webpack": "^4.8.1"
   },
   "resolutions": {

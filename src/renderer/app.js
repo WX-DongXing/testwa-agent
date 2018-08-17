@@ -2,11 +2,14 @@ import React, {Component} from 'react';
 import {createSelector} from 'reselect';
 import {updateUser} from './actions/userAction';
 import { connect } from 'react-redux';
+import '././style.scss';
 
 class App extends Component {
   render() {
     return (
-      <p>name this is</p>
+      <div>
+        <p>works!</p>
+      </div>
     );
   }
 }

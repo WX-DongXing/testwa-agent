@@ -4,13 +4,20 @@ import { app, BrowserWindow } from 'electron'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
 
+const logger = require('electron-timber');
+
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 let mainWindow
 
 function createMainWindow() {
-  const window = new BrowserWindow()
+  const window = new BrowserWindow({
+    width: 1200,
+    height: 650,
+    frame: false,
+    titleBarStyle: 'hiddenInset',
+  })
 
   if (isDevelopment) {
     window.webContents.openDevTools()
