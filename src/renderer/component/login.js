@@ -13,7 +13,9 @@ class Login extends Component {
     cookie.set('name1', '1', 10);
     cookie.set('name2', 2, 10);
     cookie.set('name3', 'a', 10);
-    setTimeout(() => {console.log(cookie.getAll())}, 4)
+    setTimeout(() => {console.log(cookie.getAll())}, 1)
+    setTimeout(() => {cookie.removeAll()}, 2)
+    setTimeout(() => {console.log(cookie.getAll())}, 2)
   }
 
   updateUser(event) {

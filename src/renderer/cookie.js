@@ -6,10 +6,6 @@ export class Cookie {
     document.cookie = `${name}=${value}; ${expires}`;
   }
 
-  setAll(cookies) {
-
-  }
-
   get(name) {
     let target = name + '=';
     const cookies = document.cookie.split(';');
@@ -20,15 +16,16 @@ export class Cookie {
   }
 
   getAll() {
-    let target = name + '=';
     const cookies = {};
+    if (document.cookie) {
       document.cookie.split(';').map(value => {
-      let item = value.trim().split('=');
-      let str1 = `{"${item[0]}":`;
-      let str2 = isNaN(Number(item[1])) ? `"${item[1]}"` : item[1]
-      let str3 = '}';
-      Object.assign(cookies, JSON.parse(str1 + str2 + str3))
-    })
+        let item = value.trim().split('=');
+        let str1 = `{"${item[0]}":`;
+        let str2 = isNaN(Number(item[1])) ? `"${item[1]}"` : item[1]
+        let str3 = '}';
+        Object.assign(cookies, JSON.parse(str1 + str2 + str3))
+      })
+    }
     return cookies;
   }
 
@@ -44,6 +41,8 @@ export class Cookie {
   }
 
   removeAll() {
-
+    document.cookie.split(';').forEach(item => {
+      document.cookie = `${item.trim().split('=')[0]}=; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+    })
   }
 }
