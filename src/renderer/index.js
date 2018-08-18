@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { combineReducers, createStore } from 'redux';
 import { Provider } from 'react-redux';
 import userReducer from './reducers/userReducer';
+import { HashRouter as Router } from 'react-router-dom';
 import App from './app';
 
 const allReducers = combineReducers({
@@ -14,4 +15,10 @@ const store = createStore(
   window.devToolsExtension && window.devToolsExtension()
 )
 
-ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('app'));
+ReactDOM.render(
+  <Provider store={store}>
+    <Router>
+      <App />
+    </Router>
+  </Provider>
+  , document.getElementById('app'));
