@@ -2,8 +2,7 @@ export class Cookie {
   set(name, value, exDays) {
     const now = new Date();
     now.setTime(now.getTime() + (exDays * 1000));
-    let expires = `expires=${now.toGMTString()}`;
-    document.cookie = `${name}=${value}; ${expires}`;
+    document.cookie = `${name}=${value}; expires=${now.toGMTString()}`;
   }
 
   get(name) {
