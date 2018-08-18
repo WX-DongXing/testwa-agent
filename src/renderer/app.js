@@ -1,7 +1,4 @@
 import React, {Component} from 'react';
-import {createSelector} from 'reselect';
-import {updateUser} from './actions/userAction';
-import { connect } from 'react-redux';
 import {Switch, Route, withRouter} from 'react-router-dom';
 import '././style.scss';
 import Config from './component/config';
@@ -20,20 +17,4 @@ class App extends Component {
   }
 }
 
-const userSelector = createSelector(
-  state => state.user,
-  user => user
-)
-
-const mapStateToProps = createSelector(
-  userSelector,
-  (user) => ({
-    user
-  })
-)
-
-const mapActionsToProps = {
-  onUpdateUser: updateUser
-}
-
-export default withRouter(connect(mapStateToProps, mapActionsToProps)(App));
+export default withRouter(App)
