@@ -7,7 +7,8 @@ import { format as formatUrl } from 'url'
 const logger = require('electron-timber');
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
-
+// disable electron security warnings
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = true;
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 let mainWindow
 
