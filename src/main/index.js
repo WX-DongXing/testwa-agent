@@ -14,8 +14,8 @@ let mainWindow
 
 function createMainWindow() {
   const window = new BrowserWindow({
-    width: 1200,
-    height: 650,
+    width: 400,
+    height: 600,
     frame: false,
     titleBarStyle: 'hiddenInset',
   })

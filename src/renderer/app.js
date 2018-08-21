@@ -3,7 +3,7 @@ import {Switch, Route, withRouter} from 'react-router-dom';
 import '././style.scss';
 import Config from './component/config';
 import Terminal from './component/terminal';
-import Login from './component/login';
+import Login from './component/login/login';
 
 class App extends Component {
   render() {

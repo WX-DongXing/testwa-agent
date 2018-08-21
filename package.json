@@ -8,8 +8,14 @@
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
+  "build": {
+    "productName": "Testwa Agent",
+    "appId": "com.testwa.agent.desktop",
+    "copyright": "Copyright © 2018 testwa"
+  },
   "dependencies": {
     "@material-ui/core": "^1.5.1",
+    "babel-plugin-transform-decorators-legacy": "^1.3.5",
     "normalize.css": "^8.0.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
