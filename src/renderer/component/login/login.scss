@@ -35,14 +35,18 @@
     }
 
     .login-input-field {
-      width: 100%;
-      box-sizing: border-box;
-      padding: 0 56px;
+      width: 288px;
       font-size: 16px;
       display: flex;
       flex-flow: row nowrap;
       justify-content: center;
       align-items: center;
+      transition: all 300ms cubic-bezier(0.25, 0.8, 0.5, 1);
+
+      &.input-focus {
+        transform: scale(1.1);
+        box-shadow: 0 14px 18px rgba(0,0,0,0.15), 0 10px 18px rgba(0,0,0,0.1);
+      }
 
       .login-input-field-paper {
         width: 100%;
@@ -64,13 +68,13 @@
       }
 
       &:nth-child(3) {
-        margin: 36px 0;
+        margin: 24px 0 36px 0;
       }
     }
   }
 
   .login-button {
     width: 288px;
-    margin: 48px 0;
+    margin: 56px 0;
   }
 }

@@ -9,12 +9,16 @@ import '../login/login.scss';
 class Login extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      usernameFocus: false,
+      passwordFocus: false,
+    }
     this.updateUsername = this.updateUsername.bind(this);
     this.updatePassword = this.updatePassword.bind(this);
-  }
-
-  componentDidMount() {
-    console.log('login component did mount!')
+    this.usernameFocus = this.usernameFocus.bind(this);
+    this.usernameBlur = this.usernameBlur.bind(this);
+    this.passwordFocus = this.passwordFocus.bind(this);
+    this.passwordBlur = this.passwordBlur.bind(this);
   }
 
   updateUsername(event) {
@@ -25,8 +29,23 @@ class Login extends Component {
     this.props.onUpdatePassword(event.target.value);
   }
 
+  usernameFocus() {
+    this.setState({usernameFocus: true});
+  }
+
+  usernameBlur() {
+    this.setState({usernameFocus: false});
+  }
+
+  passwordFocus() {
+    this.setState({passwordFocus: true});
+  }
+
+  passwordBlur() {
+    this.setState({passwordFocus: false});
+  }
+
   render() {
-    const { classes } = this.props;
     return (
       <div className="login-wrap">
         <div className="login-drag-bar"></div>
@@ -37,16 +56,16 @@ class Login extends Component {
           <Typography className="login-welcome" variant="headline" gutterBottom color="primary">
             欢迎登陆Testwa
           </Typography>
-          <div className="login-input-field">
+          <div className={this.state.usernameFocus ? 'login-input-field input-focus' : 'login-input-field'}>
             <Paper className="login-input-field-paper">
-              <Icon color="primary">perm_identity</Icon>
-              <input type="text" value={this.props.username} onChange={this.updateUsername} />
+              <Icon color={this.state.usernameFocus ? 'secondary' : 'primary'}>perm_identity</Icon>
+              <input type="text" onFocus={this.usernameFocus} onBlur={this.usernameBlur} value={this.props.username} onChange={this.updateUsername} />
             </Paper>
           </div>
-          <div className="login-input-field">
+          <div className={this.state.passwordFocus ? 'login-input-field input-focus' : 'login-input-field'}>
             <Paper className="login-input-field-paper">
-              <Icon color="primary">lock_open</Icon>
-              <input type="password" value={this.props.password} onChange={this.updatePassword} />
+              <Icon color={this.state.passwordFocus ? 'secondary' : 'primary'}>lock_open</Icon>
+              <input type="password" onFocus={this.passwordFocus} onBlur={this.passwordBlur} value={this.props.password} onChange={this.updatePassword} />
             </Paper>
           </div>
           <Link to='/config'>
