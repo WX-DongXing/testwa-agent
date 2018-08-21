@@ -21,20 +21,6 @@
     justify-content: flex-start;
     align-items: center;
 
-    .login-loading {
-      height: 100%;
-      width: 100%;
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 1;
-      background: white;
-      display: flex;
-      flex-flow: column nowrap;
-      justify-content: center;
-      align-items: center;
-    }
-
     .login-logo {
       height: 84px;
       margin: 56px 0 0 0;

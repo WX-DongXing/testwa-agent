@@ -1,19 +1,20 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router-dom';
 import {createSelector} from 'reselect';
 import {updateUsername, updatePassword} from '../../actions/loginAction';
 import connect from 'react-redux/es/connect/connect';
-import {Cookie} from '../../cookie';
-import {Icon, Button, Typography, Paper, CircularProgress} from '@material-ui/core';
+import {Icon, Button, Typography, Paper} from '@material-ui/core';
+import {Link} from 'react-router-dom';
 import '../login/login.scss';
-
-const cookie = new Cookie();
 
 class Login extends Component {
   constructor(props) {
     super(props);
     this.updateUsername = this.updateUsername.bind(this);
     this.updatePassword = this.updatePassword.bind(this);
+  }
+
+  componentDidMount() {
+    console.log('login component did mount!')
   }
 
   updateUsername(event) {
@@ -30,9 +31,6 @@ class Login extends Component {
       <div className="login-wrap">
         <div className="login-drag-bar"></div>
         <div className="login-container">
-          <div className="login-loading">
-            <CircularProgress size={50} color="secondary" />
-          </div>
           <div className="login-logo">
             <img src={require(`${__static}/image/logo.png`)} alt=""/>
           </div>
@@ -51,7 +49,9 @@ class Login extends Component {
               <input type="password" value={this.props.password} onChange={this.updatePassword} />
             </Paper>
           </div>
-          <Button className="login-button" variant="contained" color="primary">登录</Button>
+          <Link to='/config'>
+            <Button className="login-button" variant="contained" color="primary">登录</Button>
+          </Link>
         </div>
       </div>
     )
