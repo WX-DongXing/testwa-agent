@@ -4,6 +4,7 @@ import {createSelector} from 'reselect';
 import {updateUser} from '../actions/userAction';
 import connect from 'react-redux/es/connect/connect';
 import {Cookie} from '../cookie';
+import {Icon, Button} from '@material-ui/core';
 const cookie = new Cookie();
 
 class Login extends Component {
@@ -21,6 +22,8 @@ class Login extends Component {
       <div>
         <p>login</p>
         <input type="text" onChange={this.updateUser}/>
+        <Icon color='primary'>star</Icon>
+        <Button>Default</Button>
         {this.props.user}
         <Link to='/config'>go to config</Link>
       </div>
