@@ -6,7 +6,7 @@ class Config extends Component {
     return (
       <div>
         <p>config</p>
-        <Link to='/' replace>to login</Link>
+        <Link to='/login' replace>to login</Link>
       </div>
     )
   }

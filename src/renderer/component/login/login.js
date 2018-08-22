@@ -2,10 +2,10 @@ import React, {Component} from 'react';
 import {createSelector} from 'reselect';
 import {updateUsername, updatePassword} from '../../actions/loginAction';
 import connect from 'react-redux/es/connect/connect';
-import {Icon, Button, Typography, Paper} from '@material-ui/core';
-import {Link} from 'react-router-dom';
+import {Icon, Button, Typography, Paper, Snackbar} from '@material-ui/core';
 import '../login/login.scss';
 import * as anime from 'animejs';
+import { MySnackbarContentWrapper } from '../custormSnackbars/custormSnackbars';
 
 class Login extends Component {
   constructor(props) {
@@ -13,6 +13,8 @@ class Login extends Component {
     this.state = {
       usernameFocus: false,
       passwordFocus: false,
+      open: false,
+      type: false
     }
     this.updateUsername = this.updateUsername.bind(this);
     this.updatePassword = this.updatePassword.bind(this);
@@ -20,14 +22,15 @@ class Login extends Component {
     this.usernameBlur = this.usernameBlur.bind(this);
     this.passwordFocus = this.passwordFocus.bind(this);
     this.passwordBlur = this.passwordBlur.bind(this);
+    this.login = this.login.bind(this);
+    this.handleClose = this.handleClose.bind(this);
   }
 
   componentDidMount() {
-    console.log('did mount!')
     anime({
       targets: '.login-background .login-svg-path',
       d: [
-        { value: 'M0 100 L0 99 L191 300 L0 501 L0 499 L189 300 L0 101 Z'},
+        { value: 'M0 100 L0 100 L190 300 L0 500 L0 500 L190 300 L0 100 Z'},
         { value: 'M0 100 L0 40 L250 300 L0 560 L0 440 L130 300 L0 160 Z' }
       ],
       easing: 'easeOutQuad',
@@ -59,13 +62,76 @@ class Login extends Component {
     this.setState({passwordFocus: false});
   }
 
+  handleClose(event, reason) {
+    if (reason === 'clickaway') {
+      return;
+    }
+    this.setState({ open: false });
+  };
+
+  login() {
+    fetch('http://api.test.testwa.com/v1/auth/login', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body : JSON.stringify({
+        username: this.props.username,
+        password: this.props.password
+      })
+    })
+      .then(response => {
+        if(response.ok){
+          return response.json();
+         }
+        throw new Error('Request failed!');
+      })
+      .then(res => {
+        if (res.code === 0) {
+          anime({
+            targets: '.login-background .login-svg-path',
+            d: [
+              { value: 'M0 100 L0 40 L250 300 L0 560 L0 440 L130 300 L0 160 Z' },
+              { value: 'M0 100 L0 100 L190 300 L0 500 L0 500 L190 300 L0 100 Z'}
+            ],
+            easing: 'easeOutQuad',
+            duration: 350,
+          })
+          this.setState({open: true, type: true})
+          setTimeout(() => {
+            this.props.history.push('/config');
+          }, 400);
+        } else {
+          this.setState({open: true, type: false})
+        }
+      })
+      .catch(err => {
+        this.setState({open: true, type: false})
+      })
+  }
+
   render() {
     return (
       <div className="login-wrap">
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          open={this.state.open}
+          autoHideDuration={3000}
+          onClose={this.handleClose}
+        >
+          <MySnackbarContentWrapper
+            onClose={this.handleClose}
+            variant={this.state.type ? 'success' : 'error'}
+            message={this.state.type ? '登录成功！' : '账号或密码错误！'}
+          />
+        </Snackbar>
         <div className="login-background">
           <svg xmlns="http://www.w3.org/2000/svg" width="400" height="600" viewBox="0 0 400 600">
             <title>background</title>
-            <path className="login-svg-path" fill="rgb(80, 170, 56)" d="M0 100 L0 99 L191 300 L0 501 L0 499 L189 300 L0 101 Z"></path>
+            <path className="login-svg-path" fill="#d2dbdf" d="M0 100 L0 100 L190 300 L0 500 L0 500 L190 300 L0 100 Z"></path>
           </svg>
         </div>
         <div className="login-drag-bar"></div>
@@ -88,9 +154,7 @@ class Login extends Component {
               <input type="password" onFocus={this.passwordFocus} onBlur={this.passwordBlur} value={this.props.password} onChange={this.updatePassword} />
             </Paper>
           </div>
-          <Link to='/config'>
-            <Button className="login-button" variant="contained" color="primary">登录</Button>
-          </Link>
+          <Button className="login-button" variant="contained" color="primary" onClick={this.login}>登录</Button>
         </div>
       </div>
     )

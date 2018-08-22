@@ -6,6 +6,7 @@
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
+  overflow: hidden;
 
   .login-background {
     width: 100%;
