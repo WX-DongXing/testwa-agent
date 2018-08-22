@@ -5,19 +5,29 @@
   "scripts": {
     "dev": "electron-webpack dev",
     "compile": "electron-webpack",
+    "package-all": "yarn compile && build -mwl",
+    "package-mac": "yarn compile && build --mac",
+    "package-win": "yarn compile && build --win --x64",
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "build": {
     "productName": "Testwa Agent",
     "appId": "com.testwa.agent.desktop",
-    "copyright": "Copyright © 2018 testwa"
+    "copyright": "Copyright © 2018 testwa",
+    "files": [
+      "testwa/**/*"
+    ],
+    "extraResources": [
+      "static/config"
+    ]
   },
   "dependencies": {
     "@material-ui/core": "^1.5.1",
     "@material-ui/icons": "^2.0.3",
     "animejs": "^2.2.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.5",
+    "electron-util": "^0.9.0",
     "normalize.css": "^8.0.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",

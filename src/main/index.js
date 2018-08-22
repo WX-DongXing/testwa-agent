@@ -3,6 +3,7 @@
 import { app, BrowserWindow } from 'electron'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
+import check from './check';
 
 const logger = require('electron-timber');
 
@@ -13,11 +14,13 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = true;
 let mainWindow
 
 function createMainWindow() {
+
   const window = new BrowserWindow({
     width: 400,
     height: 600,
     frame: false,
     titleBarStyle: 'hiddenInset',
+    show: false
   })
 
   if (isDevelopment) {
@@ -35,6 +38,14 @@ function createMainWindow() {
       slashes: true
     }))
   }
+
+  window.once('ready-to-show', () => {
+    mainWindow.show()
+    logger.log('show!')
+    check().then(env => {
+      logger.log(env);
+    })
+  })
 
   window.on('closed', () => {
     mainWindow = null

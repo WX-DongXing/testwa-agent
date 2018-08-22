@@ -100,7 +100,7 @@ class Login extends Component {
           this.setState({open: true, type: true})
           setTimeout(() => {
             this.props.history.push('/config');
-          }, 400);
+          }, 450);
         } else {
           this.setState({open: true, type: false})
         }
