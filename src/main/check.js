@@ -40,7 +40,7 @@ async function checkNormal (cl) {
   try {
     return await openShell(cl)
   } catch (e) {
-    return '未查询出数据！' + e
+    return e
   }
 }
 
