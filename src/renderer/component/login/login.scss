@@ -2,9 +2,19 @@
   height: 100vh;
   width: 100vw;
   background: white;
+  position: relative;
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
+
+  .login-background {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 0;
+  }
 
   .login-drag-bar {
     height: 38px;

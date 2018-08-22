@@ -20,7 +20,7 @@ class App extends Component {
 
   componentDidMount() {
     setTimeout(() => {
-      cookie.get('username') ? this.props.history.push('/config') : '';
+      cookie.get('username') ? this.props.history.push('/config') : this.props.history.push('/login');
       this.setState({loading: false});
     }, 1000)
   }
@@ -28,19 +28,13 @@ class App extends Component {
   render() {
     return (
       <div className="app-wrap">
-        {
-          this.state.loading
-            ?
-            (
-              <div className="app-loading">
-                <CircularProgress size={50} color="secondary" />
-              </div>
-            )
-            : ('')
-        }
-
         <Switch>
-          <Route exact path='/' component={Login}></Route>
+          <Route exact path='/' component={() => (
+            <div className="app-loading">
+              <CircularProgress size={50} color="secondary" />
+            </div>
+          )}></Route>
+          <Route path='/login' component={Login}></Route>
           <Route path='/config' component={Config}></Route>
           <Route path='/terminal' component={Terminal}></Route>
         </Switch>

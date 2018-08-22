@@ -5,6 +5,7 @@ import connect from 'react-redux/es/connect/connect';
 import {Icon, Button, Typography, Paper} from '@material-ui/core';
 import {Link} from 'react-router-dom';
 import '../login/login.scss';
+import * as anime from 'animejs';
 
 class Login extends Component {
   constructor(props) {
@@ -19,6 +20,19 @@ class Login extends Component {
     this.usernameBlur = this.usernameBlur.bind(this);
     this.passwordFocus = this.passwordFocus.bind(this);
     this.passwordBlur = this.passwordBlur.bind(this);
+  }
+
+  componentDidMount() {
+    console.log('did mount!')
+    anime({
+      targets: '.login-background .login-svg-path',
+      d: [
+        { value: 'M0 100 L0 99 L191 300 L0 501 L0 499 L189 300 L0 101 Z'},
+        { value: 'M0 100 L0 40 L250 300 L0 560 L0 440 L130 300 L0 160 Z' }
+      ],
+      easing: 'easeOutQuad',
+      duration: 1000,
+    })
   }
 
   updateUsername(event) {
@@ -48,6 +62,12 @@ class Login extends Component {
   render() {
     return (
       <div className="login-wrap">
+        <div className="login-background">
+          <svg xmlns="http://www.w3.org/2000/svg" width="400" height="600" viewBox="0 0 400 600">
+            <title>background</title>
+            <path className="login-svg-path" fill="rgb(80, 170, 56)" d="M0 100 L0 99 L191 300 L0 501 L0 499 L189 300 L0 101 Z"></path>
+          </svg>
+        </div>
         <div className="login-drag-bar"></div>
         <div className="login-container">
           <div className="login-logo">
