@@ -10,8 +10,13 @@ export default function addEventListener(window) {
    */
   ipcMain.on('check_env', (event) => {
     if (!getConfigState()) {
+      window.setOpacity(0)
       window.setSize(getScreen().width, getScreen().height, true)
       window.setResizable(true)
+      window.center()
+      setTimeout(() => {
+        window.setOpacity(1)
+      }, 200)
     }
     event.sender.send('check_env_result', getConfigState())
   })
