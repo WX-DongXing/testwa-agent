@@ -15,8 +15,8 @@ let data
   db.defaults({
     config: {
       screen: {
-        width: 400,
-        height: 600
+        width: 900,
+        height: 576
       },
       env_path: {
         node_path: '',

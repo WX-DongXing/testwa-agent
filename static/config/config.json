@@ -1,0 +1,14 @@
+{
+  "config": {
+    "screen": {
+      "width": 900,
+      "height": 576
+    },
+    "env_path": {
+      "node_path": "/Users/xd/.nvm/versions/node/v8.11.3/bin/node\n",
+      "sdk_path": "/Users/xd/Library/Android/sdk",
+      "appium_path": ""
+    },
+    "configured": ""
+  }
+}

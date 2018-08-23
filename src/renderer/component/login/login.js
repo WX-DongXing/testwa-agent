@@ -1,11 +1,15 @@
+import { ipcRenderer } from 'electron'
 import React, {Component} from 'react';
 import {createSelector} from 'reselect';
 import {updateUsername, updatePassword} from '../../actions/loginAction';
 import connect from 'react-redux/es/connect/connect';
 import {Icon, Button, Typography, Paper, Snackbar} from '@material-ui/core';
-import '../login/login.scss';
-import * as anime from 'animejs';
 import { MySnackbarContentWrapper } from '../custormSnackbars/custormSnackbars';
+import * as anime from 'animejs';
+import {Cookie} from '../../cookie';
+import '../login/login.scss';
+
+const cookie = new Cookie()
 
 class Login extends Component {
   constructor(props) {
@@ -27,6 +31,13 @@ class Login extends Component {
   }
 
   componentDidMount() {
+    ipcRenderer.on('check_env_result', (event, args) => {
+      if (args) {
+        this.props.history.push('/simple')
+      } else {
+        this.props.history.push('/control/config')
+      }
+    })
     anime({
       targets: '.login-background .login-svg-path',
       d: [
@@ -88,6 +99,7 @@ class Login extends Component {
       })
       .then(res => {
         if (res.code === 0) {
+          cookie.set('username', this.props.username, 30)
           anime({
             targets: '.login-background .login-svg-path',
             d: [
@@ -99,7 +111,7 @@ class Login extends Component {
           })
           this.setState({open: true, type: true})
           setTimeout(() => {
-            this.props.history.push('/config');
+            ipcRenderer.send('check_env')
           }, 450);
         } else {
           this.setState({open: true, type: false})

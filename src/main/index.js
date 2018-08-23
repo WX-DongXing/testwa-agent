@@ -3,7 +3,8 @@
 import { app, BrowserWindow } from 'electron'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
-import { isConfigured } from './fill'
+import addEventListener from './eventListener'
+import persistent_env from './persistent'
 
 const logger = require('electron-timber')
 
@@ -18,10 +19,22 @@ function createMainWindow() {
   const window = new BrowserWindow({
     width: 400,
     height: 600,
+    resizable: false,
+    center: true,
     frame: false,
     titleBarStyle: 'hiddenInset',
     show: false
   })
+
+  /**
+   * add all event listener to main process
+   */
+  addEventListener(window)
+
+  /**
+   * persistent env data to local config.json
+   */
+  persistent_env()
 
   if (isDevelopment) {
     window.webContents.openDevTools()
@@ -43,7 +56,6 @@ function createMainWindow() {
    * window ready to show
    */
   window.once('ready-to-show', () => {
-    console.log(isConfigured())
     mainWindow.show()
   })
 

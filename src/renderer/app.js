@@ -1,11 +1,12 @@
-import React, {Component} from 'react';
-import {Switch, Route, withRouter} from 'react-router-dom';
-import '././style.scss';
-import Config from './component/config';
-import Terminal from './component/terminal';
-import Login from './component/login/login';
-import {Cookie} from './cookie';
-import {CircularProgress} from '@material-ui/core';
+import { ipcRenderer } from 'electron'
+import React, {Component} from 'react'
+import {Switch, Route, withRouter} from 'react-router-dom'
+import Login from './component/login/login'
+import Control from './component/control/control'
+import Terminal from './component/ternimal/terminal';
+import { Cookie } from './cookie'
+import {CircularProgress} from '@material-ui/core'
+import '././style.scss'
 
 const cookie = new Cookie();
 
@@ -19,10 +20,20 @@ class App extends Component {
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      cookie.get('username') ? this.props.history.push('/config') : this.props.history.push('/login');
-      this.setState({loading: false});
-    }, 1000)
+
+    ipcRenderer.on('check_env_result', (event, args) => {
+      if (args) {
+        this.props.history.push('/simple')
+      } else {
+        this.props.history.push('/control/config')
+      }
+    })
+
+    if (cookie.get('username')) {
+      ipcRenderer.send('check_env')
+    } else {
+      this.props.history.push('/login')
+    }
   }
 
   render() {
@@ -35,7 +46,7 @@ class App extends Component {
             </div>
           )}></Route>
           <Route path='/login' component={Login}></Route>
-          <Route path='/config' component={Config}></Route>
+          <Route path='/control' component={Control}></Route>
           <Route path='/terminal' component={Terminal}></Route>
         </Switch>
       </div>
