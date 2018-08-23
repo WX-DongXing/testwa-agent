@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import { Button } from '@material-ui/core'
 import './config.scss'
 
 class Config extends Component {
@@ -6,6 +7,7 @@ class Config extends Component {
     return (
       <div className="config-wrap">
         <h1>config</h1>
+        <Button>name</Button>
       </div>
     )
   }

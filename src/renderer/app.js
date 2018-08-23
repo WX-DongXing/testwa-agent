@@ -25,10 +25,10 @@ class App extends Component {
       if (args) {
         this.props.history.push('/simple')
       } else {
-        this.props.history.push('/control')
+        this.props.history.push('/control/config')
       }
     })
-    cookie.remove('username')
+    // cookie.remove('username')
     if (cookie.get('username')) {
       ipcRenderer.send('check_env')
     } else {

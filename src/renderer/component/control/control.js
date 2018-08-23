@@ -21,37 +21,43 @@ class Control extends Component {
         </AppBar>
         <div className="control-main">
           <List component="nav" className="control-side">
-            <Tooltip title="环境配置">
-              <NavLink to='/control/config' replace activeClassName='router-active'>
-                <ListItem button className="router-link">
-                  <ListItemIcon>
+            <NavLink to='/control/config' replace activeClassName='router-active'>
+              <ListItem button className="router-link">
+                <div className="router-link-side"></div>
+                <div className="router-link-content">
+                  <div className="router-link-icon">
                     <SettingsRoundedIcon />
-                  </ListItemIcon>
-                </ListItem>
-              </NavLink>
-            </Tooltip>
+                  </div>
+                  <p>环境配置</p>
+                </div>
+              </ListItem>
+            </NavLink>
 
-            <Tooltip title="简单模式">
-              <NavLink to='/control/simple' replace activeClassName='router-active'>
-                <ListItem button className="router-link">
-                  <ListItemIcon>
+            <NavLink to='/control/simple' replace activeClassName='router-active'>
+              <ListItem button className="router-link">
+                <div className="router-link-side"></div>
+                <div className="router-link-content">
+                  <div className="router-link-icon">
                     <SendRoundedIcon />
-                  </ListItemIcon>
-                </ListItem>
-              </NavLink>
-            </Tooltip>
+                  </div>
+                  <p>简单模式</p>
+                </div>
+              </ListItem>
+            </NavLink>
 
             <Divider />
 
-            <Tooltip title="专业模式">
-              <NavLink to='/terminal' replace>
-                <ListItem button>
-                  <ListItemIcon>
+            <NavLink to='/terminal' replace>
+              <ListItem button className="router-link">
+                <div className="router-link-side"></div>
+                <div className="router-link-content">
+                  <div className="router-link-icon">
                     <CodeRoundedIcon />
-                  </ListItemIcon>
-                </ListItem>
-              </NavLink>
-            </Tooltip>
+                  </div>
+                  <p>专业模式</p>
+                </div>
+              </ListItem>
+            </NavLink>
           </List>
           <div className="control-area">
             <Switch>
