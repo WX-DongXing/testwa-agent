@@ -3,4 +3,114 @@
   width: 100%;
   box-sizing: border-box;
   padding: 32px;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: flex-start;
+
+  .config-check {
+    width: 100%;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: flex-start;
+
+    .config-check-statistics {
+      width: 600px;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 35px;
+
+      .config-check-statistics-item {
+        width: 50%;
+        height: 70px;
+        color: #f44336;
+        font-size: 14px;
+        display: flex;
+        flex-flow: row nowrap;
+        justify-content: flex-start;
+        align-items: flex-end;
+
+        .check-statistics-item-num {
+          width: 60px;
+          font-size: 56px;
+          font-weight: 300;
+          text-align: center;
+          margin: 0 0 -10px 0;
+        }
+
+        .check-statistics-item-text {
+          margin: 0;
+        }
+
+        &.active {
+          color: #f9a934;
+        }
+      }
+    }
+
+    .config-check-item {
+      width: 632px;
+      height: 45px;
+      font-size: 14px;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: flex-start;
+      align-items: center;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
+      .config-check-item-svg {
+        width: 24px;
+        height: 24px;
+        flex: none;
+        margin-right: 24px;
+
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .config-check-item-name, .config-check-item-version {
+        width: 60px;
+        flex: none;
+        color: #222f33;
+        margin: 0 24px 0 0;
+      }
+      
+      .config-check-item-path {
+        width: 100%;
+        color: #7b7f85;
+      }
+    }
+
+    .config-appium-title {
+      margin: 30px 0 16px 0;
+    }
+
+    .config-appium-content {
+      width: 632px;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: space-between;
+      align-items: center;
+
+      .config-appium-content-icon {
+        width: 28px;
+        height: 28px;
+        flex: none;
+        margin-right: 8px;
+
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+
+      .config-appium-content-edit {
+        width: 100%;
+        margin-right: 8px;
+      }
+    }
+  }
 }

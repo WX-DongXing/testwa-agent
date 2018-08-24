@@ -13,11 +13,7 @@ class Control extends Component {
     return (
       <div className="control-wrap">
         <AppBar position="static" className="control-drag-bar">
-          <Toolbar variant="dense">
-            {/*<Typography variant="title" color="inherit">*/}
-            {/*Testwa*/}
-            {/*</Typography>*/}
-          </Toolbar>
+          <Toolbar variant="dense"></Toolbar>
         </AppBar>
         <div className="control-main">
           <List component="nav" className="control-side">
