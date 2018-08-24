@@ -4,11 +4,31 @@
       "width": 920,
       "height": 576
     },
-    "env_path": {
-      "node_path": "/Users/xd/.nvm/versions/node/v8.11.3/bin/node\n",
-      "sdk_path": "/Users/xd/Library/Android/sdk",
-      "appium_path": ""
-    },
-    "configured": ""
+    "env": {
+      "java": {
+        "version": "10",
+        "path": "/usr/bin/java\n"
+      },
+      "python": {
+        "version": "2.7.14\n",
+        "path": "/Users/xd/.pyenv/shims/python\n"
+      },
+      "node": {
+        "version": "8.11.3\n",
+        "path": "/Users/xd/.nvm/versions/node/v8.11.3/bin/node\n"
+      },
+      "adb": {
+        "version": "1.0.40",
+        "path": "/Users/xd/Library/Android/sdk/platform-tools/adb\n"
+      },
+      "sdk": {
+        "version": "???",
+        "path": "/Users/xd/Library/Android/sdk"
+      },
+      "appium": {
+        "version": "",
+        "path": ""
+      }
+    }
   }
 }

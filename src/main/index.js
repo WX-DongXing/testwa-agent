@@ -4,7 +4,6 @@ import { app, BrowserWindow } from 'electron'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
 import addEventListener from './eventListener'
-import persistent_env from './persistent'
 
 const logger = require('electron-timber')
 
@@ -30,11 +29,6 @@ function createMainWindow() {
    * add all event listener to main process
    */
   addEventListener(window)
-
-  /**
-   * persistent env data to local config.json
-   */
-  persistent_env()
 
   if (isDevelopment) {
     window.webContents.openDevTools()

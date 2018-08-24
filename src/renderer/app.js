@@ -21,16 +21,16 @@ class App extends Component {
 
   componentDidMount() {
 
-    ipcRenderer.on('check_env_result', (event, args) => {
+    ipcRenderer.on('init_check_env_result', (event, args) => {
       if (args) {
-        this.props.history.push('/simple')
+        this.props.history.push('/control/simple')
       } else {
         this.props.history.push('/control/config')
       }
     })
     // cookie.remove('username')
     if (cookie.get('username')) {
-      ipcRenderer.send('check_env')
+      ipcRenderer.send('init_check_env')
     } else {
       this.props.history.push('/login')
     }

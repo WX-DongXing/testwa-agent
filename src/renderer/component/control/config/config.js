@@ -1,3 +1,4 @@
+import { ipcRenderer } from 'electron'
 import React, {Component} from 'react'
 import { Button, Typography, Input, withStyles } from '@material-ui/core'
 import classNames from 'classnames'
@@ -5,6 +6,7 @@ import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutline
 import ErrorOutlineRoundedIcon from '@material-ui/icons/ErrorOutlineRounded'
 import FolderOpenRoundedIcon from '@material-ui/icons/FolderOpenRounded'
 import './config.scss'
+const logger = require('electron-timber')
 
 const styles = theme => ({
   button: {
@@ -23,6 +25,19 @@ const styles = theme => ({
 
 @withStyles(styles)
 class Config extends Component {
+  constructor(props) {
+    super(props);
+  }
+
+  componentDidMount() {
+    ipcRenderer.on('config_check_env_result', (event, args) => {
+    })
+  }
+
+  checkEnv() {
+    ipcRenderer.send('config_check_env')
+  }
+
   render() {
     const { classes } = this.props;
     return (

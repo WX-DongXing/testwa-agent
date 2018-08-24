@@ -1,10 +1,10 @@
 import check from './check'
-import {setNodePath, setSDKPath, setConfigState, getEnvPath } from './db';
+import { setEnv, isPass } from './db';
 
-export default async function persistent_env() {
+export default async function persistent() {
   let db = await check()
-  setNodePath(db.env.node.path)
-  setSDKPath(db.env.sdk.path)
-  let paths = getEnvPath()
-  setConfigState(paths.node_path && paths.sdk_path && paths.appium_path)
+  for (let [k, v] of Object.entries(db.env)) {
+    setEnv(k, v.version, v.path)
+  }
+  return isPass()
 }

@@ -18,12 +18,32 @@ let data
         width: 920,
         height: 576
       },
-      env_path: {
-        node_path: '',
-        sdk_path: '',
-        appium_path: ''
+      env: {
+        java: {
+          version: '',
+          path: ''
+        },
+        python: {
+          version: '',
+          path: ''
+        },
+        node: {
+          version: '',
+          path: ''
+        },
+        adb: {
+          version: '',
+          path: ''
+        },
+        sdk: {
+          version: '',
+          path: ''
+        },
+        appium: {
+          version: '',
+          path: ''
+        }
       },
-      configured: false
     }
   })
     .write()
@@ -43,38 +63,24 @@ function setScreen (width, height) {
 }
 
 /**
- * set node path
+ * set env program config
+ * @param name
+ * @param version
  * @param path
  */
-function setNodePath (path) {
-  db.set('config.env_path.node_path', path)
-    .write()
-}
-
-/**
- * set sdk path
- * @param path
- */
-function setSDKPath (path) {
-  db.set('config.env_path.sdk_path', path)
-    .write()
-}
-
-/**
- * set appium path
- * @param path
- */
-function setAppiumPath (path) {
-  db.set('config.env_path.appium_path', path)
-    .write()
+function setEnv(name, version, path) {
+  db.set(`config.env.${name}`, {
+    version: version,
+    path: path
+  }).write()
 }
 
 /**
  * get all data of env path
  * @returns {*}
  */
-function getEnvPath () {
-  return db.get('config.env_path').value()
+function getEnv () {
+  return db.get('config.env').value()
 }
 
 /**
@@ -85,30 +91,14 @@ function getScreen() {
   return db.get('config.screen').value()
 }
 
-/**
- * set config state
- * @param bool
- */
-function setConfigState(bool) {
-  db.set('config.configured', bool)
-    .write()
-}
-
-/**
- * get config state
- * @returns {*}
- */
-function getConfigState() {
-  return db.get('config.configured').value()
+function isPass() {
+  return Object.values(getEnv()).map(item => item.path).reduce((pre, cur) => Boolean(pre) && Boolean(cur))
 }
 
 export {
   setScreen,
   getScreen,
-  setNodePath,
-  setSDKPath,
-  setAppiumPath,
-  getEnvPath,
-  setConfigState,
-  getConfigState
+  setEnv,
+  getEnv,
+  isPass
 }
