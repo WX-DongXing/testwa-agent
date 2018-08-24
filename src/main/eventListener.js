@@ -9,7 +9,7 @@ export default function addEventListener(window) {
    */
   ipcMain.on('init_check_env', (event) => {
     persistent()
-      .then(isPass => {
+      .then(res => {
         window.setOpacity(0)
         window.setSize(getScreen().width, getScreen().height, true)
         window.setResizable(true)
@@ -17,7 +17,7 @@ export default function addEventListener(window) {
         setTimeout(() => {
           window.setOpacity(1)
         }, 200)
-        event.sender.send('init_check_env_result', isPass)
+        event.sender.send('init_check_env_result', res.isPass)
       })
   })
 
@@ -27,7 +27,6 @@ export default function addEventListener(window) {
   ipcMain.on('config_check_env', (event) => {
     persistent()
       .then(isPass => {
-
         event.sender.send('config_check_env_result', isPass)
       })
   })
