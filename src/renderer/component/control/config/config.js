@@ -1,10 +1,11 @@
 import { ipcRenderer } from 'electron'
 import React, {Component} from 'react'
-import { Button, Typography, Input, withStyles } from '@material-ui/core'
+import { Button, Typography, Input, Tooltip, CircularProgress, withStyles } from '@material-ui/core'
 import classNames from 'classnames'
 import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded'
 import ErrorOutlineRoundedIcon from '@material-ui/icons/ErrorOutlineRounded'
 import FolderOpenRoundedIcon from '@material-ui/icons/FolderOpenRounded'
+import HelpOutlineRoundedIcon from '@material-ui/icons/HelpOutlineRounded'
 import './config.scss'
 const logger = require('electron-timber')
 
@@ -20,6 +21,18 @@ const styles = theme => ({
   },
   input: {
     width: '100%'
+  },
+  wrapper: {
+    margin: theme.spacing.unit,
+    position: 'relative',
+  },
+  buttonProgress: {
+    color: '#334955',
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    marginTop: -10,
+    marginLeft: -20,
   }
 });
 
@@ -27,23 +40,56 @@ const styles = theme => ({
 class Config extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      loading: false
+    }
+    this.handleButtonClick = this.handleButtonClick.bind(this)
   }
 
   componentDidMount() {
     ipcRenderer.on('config_check_env_result', (event, args) => {
+      console.log(args)
     })
   }
 
-  checkEnv() {
+  handleButtonClick() {
     ipcRenderer.send('config_check_env')
-  }
+    if (!this.state.loading) {
+      this.setState(
+        {
+          loading: true
+        },
+        () => {
+          this.timer = setTimeout(() => {
+            this.setState({
+              loading: false
+            });
+          }, 2000);
+        },
+      );
+    }
+  };
 
   render() {
     const { classes } = this.props;
     return (
       <div className="config-wrap">
         <div className="config-check">
-          <Typography variant="body2" gutterBottom color='primary'>环境检测</Typography>
+          <div className="config-check-title">
+            <div className={classes.wrapper}>
+              <Button
+                color="primary"
+                disabled={this.state.loading}
+                onClick={this.handleButtonClick}
+              >
+                环境检测
+              </Button>
+              {this.state.loading && <CircularProgress size={24} className={classes.buttonProgress} />}
+            </div>
+            <Tooltip title="点击左侧‘环境检查’以重新检查" placement="right">
+              <HelpOutlineRoundedIcon className="config-check-title-icon"/>
+            </Tooltip>
+          </div>
           <div className="config-check-statistics">
             <div className="config-check-statistics-item active">
               <CheckCircleOutlineRoundedIcon />

@@ -13,6 +13,22 @@
     flex-flow: column nowrap;
     justify-content: flex-start;
 
+    .config-check-title {
+      width: 632px;
+      display: flex;
+      flex-flow: row nowrap;
+      justify-content: flex-start;
+      align-items: center;
+
+      button {
+        margin: 0 0 0 -18px;
+      }
+
+      .config-check-title-icon {
+        font-size: 16px;
+      }
+    }
+
     .config-check-statistics {
       width: 600px;
       display: flex;
