@@ -1,6 +1,7 @@
 import { ipcMain } from 'electron'
 import { getScreen } from './db'
 import persistent from './persistent'
+import { check } from './check'
 
 export default function addEventListener(window) {
 

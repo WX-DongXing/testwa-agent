@@ -1,14 +1,13 @@
-import { ipcRenderer } from 'electron'
+import { ipcRenderer, remote } from 'electron'
 import React, {Component} from 'react'
 import {Switch, Route, withRouter} from 'react-router-dom'
 import Login from './component/login/login'
 import Control from './component/control/control'
 import Terminal from './component/ternimal/terminal';
-import { Cookie } from './cookie'
 import {CircularProgress} from '@material-ui/core'
 import '././style.scss'
-
-const cookie = new Cookie();
+const session = remote.session.defaultSession
+const LOGIN_URL = 'http://api.test.testwa.com/v1/auth/login'
 
 class App extends Component {
 
@@ -20,7 +19,6 @@ class App extends Component {
   }
 
   componentDidMount() {
-
     ipcRenderer.on('init_check_env_result', (event, args) => {
       if (args) {
         this.props.history.push('/control/simple')
@@ -28,12 +26,19 @@ class App extends Component {
         this.props.history.push('/control/config')
       }
     })
-    // cookie.remove('username')
-    if (cookie.get('username')) {
-      ipcRenderer.send('init_check_env')
-    } else {
-      this.props.history.push('/login')
-    }
+
+    // session.cookies.remove(LOGIN_URL, 'username', error => {
+    //   console.log('remove username')
+    //   if (error) console.log(error)
+    // })
+
+    session.cookies.get({name: 'username'}, (error, cookies) => {
+      if (cookies.length === 0) {
+        this.props.history.push('/login')
+      } else {
+        ipcRenderer.send('init_check_env')
+      }
+    })
   }
 
   render() {

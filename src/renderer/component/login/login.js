@@ -1,4 +1,4 @@
-import { ipcRenderer } from 'electron'
+import { ipcRenderer, remote } from 'electron'
 import React, {Component} from 'react';
 import {createSelector} from 'reselect';
 import {updateUsername, updatePassword} from '../../actions/loginAction';
@@ -6,10 +6,10 @@ import connect from 'react-redux/es/connect/connect';
 import {Icon, Button, Typography, Paper, Snackbar} from '@material-ui/core';
 import { MySnackbarContentWrapper } from '../custormSnackbars/custormSnackbars';
 import * as anime from 'animejs';
-import {Cookie} from '../../cookie';
 import '../login/login.scss';
-
-const cookie = new Cookie()
+const session = remote.session.defaultSession
+const LOGIN_URL = 'http://api.test.testwa.com/v1/auth/login'
+const expirationDate = Math.round(new Date().getTime() / 1000) + 24 * 60 * 60 * 30
 
 class Login extends Component {
   constructor(props) {
@@ -81,7 +81,7 @@ class Login extends Component {
   };
 
   login() {
-    fetch('http://api.test.testwa.com/v1/auth/login', {
+    fetch(LOGIN_URL, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json"
@@ -99,7 +99,14 @@ class Login extends Component {
       })
       .then(res => {
         if (res.code === 0) {
-          cookie.set('username', this.props.username, 30)
+          session.cookies.set({
+            url: LOGIN_URL,
+            name: 'username',
+            value: this.props.username,
+            expirationDate: expirationDate
+          }, error => {
+            if(error) console.log(error)
+          })
           anime({
             targets: '.login-background .login-svg-path',
             d: [
@@ -111,8 +118,9 @@ class Login extends Component {
           })
           this.setState({open: true, type: true})
           setTimeout(() => {
+            // this.props.history.push('/')
             ipcRenderer.send('init_check_env')
-          }, 450);
+          }, 300);
         } else {
           this.setState({open: true, type: false})
         }
