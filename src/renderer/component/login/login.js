@@ -111,7 +111,7 @@ class Login extends Component {
           })
           this.setState({open: true, type: true})
           setTimeout(() => {
-            ipcRenderer.send('check_env')
+            ipcRenderer.send('init_check_env')
           }, 450);
         } else {
           this.setState({open: true, type: false})

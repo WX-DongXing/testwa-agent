@@ -1,9 +1,7 @@
 const path = require('path')
-const targetPath = path.join(__static, '/config/config.json')
-
 const low = require('lowdb')
 const FileSync = require('lowdb/adapters/FileSync')
-const adapter = new FileSync(targetPath)
+const adapter = new FileSync(path.join(__static, '/config/config.json'))
 const db = low(adapter)
 
 let data

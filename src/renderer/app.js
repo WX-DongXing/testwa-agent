@@ -22,7 +22,7 @@ class App extends Component {
   componentDidMount() {
 
     ipcRenderer.on('init_check_env_result', (event, args) => {
-      if (args.isPass) {
+      if (args) {
         this.props.history.push('/control/simple')
       } else {
         this.props.history.push('/control/config')
