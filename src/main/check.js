@@ -54,7 +54,7 @@ async function checkAbnormal (cl) {
 
 function openShell (cl) {
   return new Promise((resolve, reject) => {
-    exec(cl, {encoding: 'utf8', cwd: path.join(__dirname)}, (err, stdout, stderr) => {
+    exec(cl, {encoding: 'utf8', env: process.env, cwd: path.join(__static)}, (err, stdout, stderr) => {
       if (err) {
         reject(err)
       } else if (stdout) {
