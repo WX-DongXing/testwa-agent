@@ -39,30 +39,12 @@ const styles = theme => ({
 });
 
 const searchingEnv = {
-  node: {
-    version: '',
-    path: ''
-  },
-  java: {
-    version: '',
-    path: ''
-  },
-  python: {
-    version: '',
-    path: ''
-  },
-  adb: {
-    version: '',
-    path: ''
-  },
-  sdk: {
-    version: '',
-    path: ''
-  },
-  appium: {
-    version: '',
-    path: ''
-  }
+  node: { version: '', path: '' },
+  java: { version: '', path: '' },
+  python: { version: '', path: '' },
+  adb: { version: '', path: '' },
+  sdk: { version: '', path: '' },
+  appium: { version: '', path: '' }
 }
 
 @withStyles(styles)
@@ -73,6 +55,7 @@ class Config extends Component {
       loading: false
     }
     this.handleButtonClick = this.handleButtonClick.bind(this)
+    this.inputChange = this.inputChange.bind(this)
   }
 
   componentDidMount() {
@@ -80,6 +63,43 @@ class Config extends Component {
       this.props.onUpdateEnv(args.env)
       this.setState({ loading: false })
     })
+    ipcRenderer.on('selected-directory', (event, path) => {
+      this.updateAppiumPath(path[0])
+    })
+  }
+
+  updateAppiumPath(path) {
+    ipcRenderer.send('store-appium', { version: '', path: path})
+    this.props.onUpdateEnv({
+      node: {
+        version: this.props.env.node.version,
+        path: this.props.env.node.path
+      },
+      java: {
+        version: this.props.env.java.version,
+        path: this.props.env.java.path
+      },
+      python: {
+        version: this.props.env.python.version,
+        path: this.props.env.python.path
+      },
+      adb: {
+        version: this.props.env.adb.version,
+        path: this.props.env.adb.path
+      },
+      sdk: {
+        version: this.props.env.sdk.version,
+        path: this.props.env.sdk.path
+      },
+      appium: {
+        version: '',
+        path: path
+      }
+    })
+  }
+
+  openFileDialog() {
+    ipcRenderer.send('open-file-dialog')
   }
 
   handleButtonClick() {
@@ -90,6 +110,10 @@ class Config extends Component {
       );
     }
   };
+
+  inputChange(event) {
+    this.updateAppiumPath(event.target.value.trim())
+  }
 
   render() {
     const { classes } = this.props;
@@ -243,10 +267,10 @@ class Config extends Component {
               </svg>
             </div>
             <div className="config-appium-content-edit">
-              <Input className={classes.input} value={this.props.env.appium.path}/>
+              <Input className={classes.input} value={this.props.env.appium.path} onChange={this.inputChange}/>
             </div>
-            <Button variant="contained" color="primary" size="small" className={classes.button}>
-              <FolderOpenRoundedIcon  className={classNames(classes.leftIcon, classes.iconSmall)}/>
+            <Button variant="contained" color="primary" size="small" className={classes.button} onClick={this.openFileDialog}>
+              <FolderOpenRoundedIcon className={classNames(classes.leftIcon, classes.iconSmall)}/>
               打开文件
             </Button>
           </div>

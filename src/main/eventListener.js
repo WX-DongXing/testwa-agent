@@ -1,5 +1,5 @@
-import { ipcMain } from 'electron'
-import { getScreen } from './db'
+import { ipcMain, dialog } from 'electron'
+import { getScreen, setEnv } from './db'
 import persistent from './persistent'
 import { check } from './check'
 
@@ -30,6 +30,23 @@ export default function addEventListener(window) {
       .then(args => {
         event.sender.send('config_check_env_result', args)
       })
+  })
+
+  /**
+   * open file dialog to select appium path
+   */
+  ipcMain.on('open-file-dialog', (event) => {
+    dialog.showOpenDialog(
+      { properties: ['openFile', 'openDirectory'] },
+      (files) => {
+        if (files) {
+          event.sender.send('selected-directory', files)
+        }
+      })
+  })
+
+  ipcMain.on('store-appium', (event, args) => {
+    setEnv('appium', args.version, args.path)
   })
 
 }
