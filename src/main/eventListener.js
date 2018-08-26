@@ -27,8 +27,8 @@ export default function addEventListener(window) {
    */
   ipcMain.on('config_check_env', (event) => {
     persistent()
-      .then(isPass => {
-        event.sender.send('config_check_env_result', isPass)
+      .then(args => {
+        event.sender.send('config_check_env_result', args)
       })
   })
 

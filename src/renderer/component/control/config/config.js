@@ -38,6 +38,33 @@ const styles = theme => ({
   }
 });
 
+const searchingEnv = {
+  node: {
+    version: '',
+    path: ''
+  },
+  java: {
+    version: '',
+    path: ''
+  },
+  python: {
+    version: '',
+    path: ''
+  },
+  adb: {
+    version: '',
+    path: ''
+  },
+  sdk: {
+    version: '',
+    path: ''
+  },
+  appium: {
+    version: '',
+    path: ''
+  }
+}
+
 @withStyles(styles)
 class Config extends Component {
   constructor(props) {
@@ -50,24 +77,16 @@ class Config extends Component {
 
   componentDidMount() {
     ipcRenderer.on('config_check_env_result', (event, args) => {
-      console.log(args)
+      this.props.onUpdateEnv(args.env)
+      this.setState({ loading: false })
     })
   }
 
   handleButtonClick() {
+    this.props.onUpdateEnv(searchingEnv)
     ipcRenderer.send('config_check_env')
     if (!this.state.loading) {
-      this.setState(
-        {
-          loading: true
-        },
-        () => {
-          this.timer = setTimeout(() => {
-            this.setState({
-              loading: false
-            });
-          }, 2000);
-        },
+      this.setState({ loading: true }
       );
     }
   };
@@ -95,7 +114,11 @@ class Config extends Component {
           <div className="config-check-statistics">
             <div className="config-check-statistics-item active">
               <CheckCircleOutlineRoundedIcon />
-              <p className="check-statistics-item-num">{Object.values(this.props.env).map(item => item.path).filter(value => value !== '').length - 1}</p>
+              <p className="check-statistics-item-num">{
+                Object.values(this.props.env)
+                  .map(item => item.path)
+                  .filter(value => value !== '').length
+              }</p>
               <p className="check-statistics-item-text">已检出</p>
             </div>
             <div className="config-check-statistics-item">
@@ -202,8 +225,8 @@ class Config extends Component {
               </svg>
             </div>
             <p className="config-check-item-name">SDK</p>
-            <p className="config-check-item-version">{this.props.env.sdk ? this.props.env.sdk.version : ''}</p>
-            <p className="config-check-item-path">{this.props.env.sdk ? this.props.env.sdk.path : ''}</p>
+            <p className="config-check-item-version">{this.props.env.sdk.version}</p>
+            <p className="config-check-item-path">{this.props.env.sdk.path}</p>
           </div>
           <Typography variant="body2" gutterBottom color='primary' className="config-appium-title">Appium目录</Typography>
           <div className="config-appium-content">
@@ -220,7 +243,7 @@ class Config extends Component {
               </svg>
             </div>
             <div className="config-appium-content-edit">
-              <Input className={classes.input}/>
+              <Input className={classes.input} value={this.props.env.appium.path}/>
             </div>
             <Button variant="contained" color="primary" size="small" className={classes.button}>
               <FolderOpenRoundedIcon  className={classNames(classes.leftIcon, classes.iconSmall)}/>

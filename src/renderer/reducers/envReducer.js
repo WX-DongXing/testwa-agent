@@ -16,10 +16,14 @@ const initEnv = {
     version: '',
     path: ''
   },
-  appium: {
+  sdk: {
     version: '',
     path: ''
   },
+  appium: {
+    version: '',
+    path: ''
+  }
 }
 
 export function envReducer(state = initEnv, {type, payload} ) {
