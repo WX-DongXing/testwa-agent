@@ -1,5 +1,8 @@
 import { ipcRenderer, remote } from 'electron'
 import React, {Component} from 'react'
+import connect from 'react-redux/es/connect/connect';
+import {createSelector} from 'reselect';
+import { updateEnv } from './actions/envAction';
 import {Switch, Route, withRouter} from 'react-router-dom'
 import Login from './component/login/login'
 import Control from './component/control/control'
@@ -20,7 +23,8 @@ class App extends Component {
 
   componentDidMount() {
     ipcRenderer.on('init_check_env_result', (event, args) => {
-      if (args) {
+      this.props.onUpdateEnv(args.env)
+      if (args.isPass) {
         this.props.history.push('/control/simple')
       } else {
         this.props.history.push('/control/config')
@@ -59,4 +63,20 @@ class App extends Component {
   }
 }
 
-export default withRouter(App)
+const envSelector = createSelector(
+  state => state.env,
+  env => env
+)
+
+const mapStateToProps = createSelector(
+  envSelector,
+  env => ({
+    env
+  })
+)
+
+const mapActionToProps = {
+  onUpdateEnv: updateEnv
+}
+
+export default withRouter(connect(mapStateToProps, mapActionToProps)(App))

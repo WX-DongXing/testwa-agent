@@ -30,10 +30,10 @@ function createMainWindow() {
    */
   addEventListener(window)
 
-  if (isDevelopment) {
+  // if (isDevelopment) {
     window.webContents.openDevTools()
     BrowserWindow.addDevToolsExtension('/Users/xd/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.15.3_0')
-  }
+  // }
 
   if (isDevelopment) {
     window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`)

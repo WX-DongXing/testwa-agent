@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom';
 import { combineReducers, createStore } from 'redux';
 import { Provider } from 'react-redux';
 import {usernameReducer, passwordReducer} from './reducers/loginReducer';
+import {envReducer} from './reducers/envReducer';
 import { HashRouter as Router } from 'react-router-dom';
 import App from './app';
 import 'typeface-roboto/index.css';
-
 import { createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 
 const theme = createMuiTheme({
@@ -30,7 +30,8 @@ const theme = createMuiTheme({
 
 const allReducers = combineReducers({
   username: usernameReducer,
-  password: passwordReducer
+  password: passwordReducer,
+  env: envReducer
 })
 
 const store = createStore(

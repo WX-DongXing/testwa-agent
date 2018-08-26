@@ -18,7 +18,7 @@ export default function addEventListener(window) {
         setTimeout(() => {
           window.setOpacity(1)
         }, 200)
-        event.sender.send('init_check_env_result', res.isPass)
+        event.sender.send('init_check_env_result', res)
       })
   })
 

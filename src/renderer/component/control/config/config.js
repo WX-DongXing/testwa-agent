@@ -1,5 +1,7 @@
 import { ipcRenderer } from 'electron'
 import React, {Component} from 'react'
+import connect from 'react-redux/es/connect/connect';
+import {createSelector} from 'reselect';
 import { Button, Typography, Input, Tooltip, CircularProgress, withStyles } from '@material-ui/core'
 import classNames from 'classnames'
 import CheckCircleOutlineRoundedIcon from '@material-ui/icons/CheckCircleOutlineRounded'
@@ -7,7 +9,7 @@ import ErrorOutlineRoundedIcon from '@material-ui/icons/ErrorOutlineRounded'
 import FolderOpenRoundedIcon from '@material-ui/icons/FolderOpenRounded'
 import HelpOutlineRoundedIcon from '@material-ui/icons/HelpOutlineRounded'
 import './config.scss'
-const logger = require('electron-timber')
+import {updateEnv} from '../../../actions/envAction';
 
 const styles = theme => ({
   button: {
@@ -93,12 +95,12 @@ class Config extends Component {
           <div className="config-check-statistics">
             <div className="config-check-statistics-item active">
               <CheckCircleOutlineRoundedIcon />
-              <p className="check-statistics-item-num">3</p>
+              <p className="check-statistics-item-num">{Object.values(this.props.env).map(item => item.path).filter(value => value !== '').length - 1}</p>
               <p className="check-statistics-item-text">已检出</p>
             </div>
             <div className="config-check-statistics-item">
               <ErrorOutlineRoundedIcon />
-              <p className="check-statistics-item-num">2</p>
+              <p className="check-statistics-item-num">{Object.values(this.props.env).map(item => item.path).filter(value => value === '').length}</p>
               <p className="check-statistics-item-text">未检出</p>
             </div>
           </div>
@@ -114,8 +116,8 @@ class Config extends Component {
               </svg>
             </div>
             <p className="config-check-item-name">Java</p>
-            <p className="config-check-item-version">1.8.23</p>
-            <p className="config-check-item-path">/usr/bin/java</p>
+            <p className="config-check-item-version">{this.props.env.java.version}</p>
+            <p className="config-check-item-path">{this.props.env.java.path}</p>
           </div>
           <div className="config-check-item">
             <div className="config-check-item-svg">
@@ -131,8 +133,8 @@ class Config extends Component {
               </svg>
             </div>
             <p className="config-check-item-name">Node</p>
-            <p className="config-check-item-version">8.11.3</p>
-            <p className="config-check-item-path">/Users/xd/.nvm/versions/node/v8.11.3/bin/node</p>
+            <p className="config-check-item-version">{this.props.env.node.version}</p>
+            <p className="config-check-item-path">{this.props.env.node.path}</p>
           </div>
           <div className="config-check-item">
             <div className="config-check-item-svg">
@@ -151,8 +153,8 @@ class Config extends Component {
               </svg>
             </div>
             <p className="config-check-item-name">Python</p>
-            <p className="config-check-item-version">2.7.14</p>
-            <p className="config-check-item-path">/Users/xd/.pyenv/shims/python</p>
+            <p className="config-check-item-version">{this.props.env.python.version}</p>
+            <p className="config-check-item-path">{this.props.env.python.path}</p>
           </div>
           <div className="config-check-item">
             <div className="config-check-item-svg">
@@ -168,8 +170,8 @@ class Config extends Component {
               </svg>
             </div>
             <p className="config-check-item-name">ADB</p>
-            <p className="config-check-item-version">8.11.3</p>
-            <p className="config-check-item-path">/Users/xd/.nvm/versions/node/v8.11.3/bin/node</p>
+            <p className="config-check-item-version">{this.props.env.adb.version}</p>
+            <p className="config-check-item-path">{this.props.env.adb.path}</p>
           </div>
           <div className="config-check-item">
             <div className="config-check-item-svg">
@@ -200,8 +202,8 @@ class Config extends Component {
               </svg>
             </div>
             <p className="config-check-item-name">SDK</p>
-            <p className="config-check-item-version">???</p>
-            <p className="config-check-item-path">/Users/xd/.nvm/versions/node/v8.11.3/bin/node</p>
+            <p className="config-check-item-version">{this.props.env.sdk ? this.props.env.sdk.version : ''}</p>
+            <p className="config-check-item-path">{this.props.env.sdk ? this.props.env.sdk.path : ''}</p>
           </div>
           <Typography variant="body2" gutterBottom color='primary' className="config-appium-title">Appium目录</Typography>
           <div className="config-appium-content">
@@ -231,4 +233,20 @@ class Config extends Component {
   }
 }
 
-export default Config;
+const envSelector = createSelector(
+  state => state.env,
+  env => env
+)
+
+const mapStateToProps = createSelector(
+  envSelector,
+  env => ({
+    env
+  })
+)
+
+const mapActionToProps = {
+  onUpdateEnv: updateEnv
+}
+
+export default connect(mapStateToProps, mapActionToProps)(Config);
