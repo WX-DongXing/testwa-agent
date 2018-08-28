@@ -25,7 +25,7 @@ class App extends Component {
     ipcRenderer.on('init_check_env_result', (event, args) => {
       this.props.onUpdateEnv(args.env)
       if (args.isPass) {
-        this.props.history.push('/control/simple')
+        this.props.history.push('/terminal')
       } else {
         this.props.history.push('/control/config')
       }

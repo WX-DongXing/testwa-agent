@@ -1,0 +1,113 @@
+.terminal-wrap {
+  width: 100vw;
+  height: 100vh;
+  font-size: 14px;
+  overflow: hidden;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+
+  &.primary {
+    color: #f9a934;
+    background: #334955;
+
+    & .terminal-main .terminal-log-container {
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background: #c17a00;
+      }
+    }
+  }
+
+  &.dark {
+    color: #ffffff;
+    background: #000000;
+  }
+
+  &.light {
+    color: #000000;
+    background: #ffffff;
+
+    & .terminal-main .terminal-log-container {
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background: #7f7f7f;
+      }
+    }
+  }
+
+  .terminal-drag-title {
+    height: 45px;
+    position: relative;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: center;
+    box-sizing: border-box;
+    padding-right: 5px;
+    -webkit-app-region: drag;
+
+    &:hover {
+      .icon-button {
+        display: flex;
+      }
+    }
+
+    .icon-button {
+      display: none;
+      height: 32px;
+      width: 32px;
+      margin: 0 5px;
+      -webkit-app-region: no-drag;
+
+      &.white {
+        color: #ffffff;
+      }
+
+      &.primary {
+        color: #334955;
+      }
+      
+      &.start {
+        color: #4bb134;
+      }
+      
+      &.clear {
+        color: cornflowerblue;
+      }
+    }
+  }
+
+  .terminal-main {
+    height: calc(100vh - 45px);
+    box-sizing: border-box;
+    padding: 0 10px 16px 16px;
+    overflow: hidden;
+    position: relative;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+
+    .terminal-log-container {
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+
+      &::-webkit-scrollbar{
+        width: 5px;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background: #333333;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: transparent;
+      }
+    }
+  }
+}

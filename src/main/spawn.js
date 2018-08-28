@@ -19,8 +19,8 @@ function check_env() {
     spawn('node.path', is.windows ? 'where node' : 'which node'),
     spawn('java.version', 'java -version', true),
     spawn('java.path', is.windows ? 'where java' : 'which java'),
-    spawn('python.version', 'python --version', true),
-    spawn('python.path', is.windows ? 'where python' : 'which python', true),
+    spawn('python.version', 'python --version'),
+    spawn('python.path', is.windows ? 'where python' : 'which python'),
     spawn('adb.version', 'adb version'),
     spawn('adb.path', is.windows ? 'where adb' : 'which adb')
   )

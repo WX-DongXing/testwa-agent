@@ -41,7 +41,6 @@ export default function persistent() {
     default_env.adb.version = isExist(envs[6].value, envs[6].value.split('\n')[0].split(' ')[4])
     default_env.sdk.version = ''
     default_env.sdk.path = isExist(envs[7].value, envs[7].value.split('/platform-tools/adb')[0])
-    console.log(Object.entries(default_env))
     for (let [k, v] of Object.entries(default_env)) {
       setEnv(k, v.version, v.path)
     }

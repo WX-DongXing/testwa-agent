@@ -29,17 +29,17 @@ class Control extends Component {
               </ListItem>
             </NavLink>
 
-            <NavLink to='/control/simple' replace activeClassName='router-active'>
-              <ListItem button className="router-link">
-                <div className="router-link-side"></div>
-                <div className="router-link-content">
-                  <div className="router-link-icon">
-                    <SendRoundedIcon />
-                  </div>
-                  <p>简单模式</p>
-                </div>
-              </ListItem>
-            </NavLink>
+            {/*<NavLink to='/control/simple' replace activeClassName='router-active'>*/}
+              {/*<ListItem button className="router-link">*/}
+                {/*<div className="router-link-side"></div>*/}
+                {/*<div className="router-link-content">*/}
+                  {/*<div className="router-link-icon">*/}
+                    {/*<SendRoundedIcon />*/}
+                  {/*</div>*/}
+                  {/*<p>简单模式</p>*/}
+                {/*</div>*/}
+              {/*</ListItem>*/}
+            {/*</NavLink>*/}
 
             <Divider />
 
