@@ -1,6 +1,6 @@
 {
   "name": "testwa-agent",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "license": "",
   "scripts": {
     "dev": "electron-webpack dev",
@@ -22,7 +22,8 @@
   },
   "dependencies": {
     "source-map-support": "^0.5.5",
-    "spawn-default-shell": "^2.0.0"
+    "spawn-default-shell": "^2.0.0",
+    "rxjs": "^6.2.2"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.0.0-rc.1",

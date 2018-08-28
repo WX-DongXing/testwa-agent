@@ -1,13 +1,49 @@
-import check from './check'
-import {setEnv, isPass, getEnv} from './db';
+import { setEnv } from './db';
+import { check_env } from './spawn'
+import { map } from 'rxjs/operators'
 
-export default async function persistent() {
-  let db = await check()
-  for (let [k, v] of Object.entries(db.env)) {
-    setEnv(k, v.version, v.path)
+export default function persistent() {
+
+  function isExist (target, handle) {
+    return target ? handle : ''
   }
-  return {
-    isPass: isPass(),
-    env: getEnv()
-  }
+
+  return check_env().pipe(map(envs => {
+    let default_env = {
+      node: {
+        version: '',
+        path: ''
+      },
+      java: {
+        version: '',
+        path: ''
+      },
+      python: {
+        version: '',
+        path: ''
+      },
+      adb: {
+        version: '',
+        path: ''
+      },
+      sdk: {
+        version: '',
+        path: ''
+      }
+    }
+    envs.filter((value, index) => index % 2 !== 0)
+      .forEach(env => {
+        default_env[env.name.split('.')[0]].path = env.value
+      })
+    default_env.node.version = isExist(envs[0].value, envs[0].value.split('v')[1])
+    default_env.java.version = isExist(envs[2].value, new RegExp('\\"(.*?)\\"').exec(envs[2].value)[1])
+    default_env.python.version = isExist(envs[4].value, envs[4].value.split(' ')[1])
+    default_env.adb.version = isExist(envs[6].value, envs[6].value.split('\n')[0].split(' ')[4])
+    default_env.sdk.version = ''
+    default_env.sdk.path = isExist(envs[7].value, envs[7].value.split('/platform-tools/adb')[0])
+    console.log(Object.entries(default_env))
+    for (let [k, v] of Object.entries(default_env)) {
+      setEnv(k, v.version, v.path)
+    }
+  }))
 }

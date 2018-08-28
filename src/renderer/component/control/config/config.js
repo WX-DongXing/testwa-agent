@@ -44,7 +44,7 @@ const searchingEnv = {
   python: { version: '', path: '' },
   adb: { version: '', path: '' },
   sdk: { version: '', path: '' },
-  appium: { version: '', path: '' }
+  appium: { version: '', path: this.props.env.appium.path }
 }
 
 @withStyles(styles)

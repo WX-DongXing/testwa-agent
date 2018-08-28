@@ -1,7 +1,6 @@
 import { ipcMain, dialog } from 'electron'
-import { getScreen, setEnv } from './db'
+import { getScreen, setEnv, getEnv, isPass } from './db'
 import persistent from './persistent'
-import { check } from './check'
 
 export default function addEventListener(window) {
 
@@ -10,7 +9,7 @@ export default function addEventListener(window) {
    */
   ipcMain.on('init_check_env', (event) => {
     persistent()
-      .then(res => {
+      .subscribe(() => {
         window.setOpacity(0)
         window.setSize(getScreen().width, getScreen().height, true)
         window.setResizable(true)
@@ -18,8 +17,12 @@ export default function addEventListener(window) {
         setTimeout(() => {
           window.setOpacity(1)
         }, 200)
-        event.sender.send('init_check_env_result', res)
+        event.sender.send('init_check_env_result', {
+          isPass: isPass(),
+          env: getEnv()
+        })
       })
+
   })
 
   /**
@@ -27,8 +30,11 @@ export default function addEventListener(window) {
    */
   ipcMain.on('config_check_env', (event) => {
     persistent()
-      .then(args => {
-        event.sender.send('config_check_env_result', args)
+      .subscribe(() => {
+        event.sender.send('config_check_env_result', {
+          isPass: isPass(),
+          env: getEnv()
+        })
       })
   })
 
