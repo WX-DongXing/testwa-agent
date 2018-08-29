@@ -1,8 +1,12 @@
 import { ipcMain, dialog } from 'electron'
+import path from 'path'
+import childProcess from 'child_process'
 import { getScreen, setEnv, getEnv, isPass } from './db'
 import persistent from './persistent'
 import { mainWindow as window } from './index'
 import { first } from 'rxjs/operators'
+let targetPath = path.join(__static, '/java/resources')
+let serveProcess
 
 function addEventListener() {
   /**
@@ -51,8 +55,31 @@ function addEventListener() {
       })
   })
 
+  /**
+   * store appium path to local
+   */
   ipcMain.on('store-appium', (event, args) => {
     setEnv('appium', args.version, args.path)
+  })
+
+  ipcMain.on('resetting-window', (event) => {
+    window.setOpacity(0)
+    window.setSize(400, 600, true)
+    window.setResizable(false)
+    window.center()
+    setTimeout(() => {
+      window.setOpacity(1)
+    }, 200)
+    event.sender.send('reset-window', true)
+  })
+
+  ipcMain.on('run-service', (event) => {
+    // serveProcess = childProcess.execFile()
+    event.sender.send('serve-log', 'running')
+  })
+
+  ipcMain.on('service-serve', (event) => {
+    event.sender.send('service-log', 'stopped')
   })
 
 }
@@ -62,6 +89,8 @@ function ipcMainRemoveListeners() {
   ipcMain.removeAllListeners('config_check_env')
   ipcMain.removeAllListeners('open-file-dialog')
   ipcMain.removeAllListeners('store-appium')
+  ipcMain.removeAllListeners('run-serve')
+  ipcMain.removeAllListeners('stop-serve')
 }
 
 export {

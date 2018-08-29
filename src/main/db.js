@@ -77,8 +77,16 @@ function setEnv(name, version, path) {
  * get all data of env path
  * @returns {*}
  */
-function getEnv () {
+function getEnv() {
   return db.get('config.env').value()
+}
+
+function getServePath() {
+  return {
+    node_path: db.get('config.env.node.path').value(),
+    sdk_path: db.get('config.env.sdk.path').value(),
+    appium_path: db.get('config.env.appium.path').value()
+  }
 }
 
 /**
@@ -98,5 +106,6 @@ export {
   getScreen,
   setEnv,
   getEnv,
-  isPass
+  isPass,
+  getServePath
 }

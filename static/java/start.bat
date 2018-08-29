@@ -1,0 +1,1 @@
+java -jar -server -Xms1024m -Xmx2048m distest-client-1.0-SNAPSHOT.jar --spring.config.location=config/application.properties --username=admin --password=admin

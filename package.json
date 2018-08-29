@@ -17,7 +17,8 @@
     "appId": "com.testwa.agent.desktop",
     "copyright": "Copyright © 2018 testwa",
     "extraResources": [
-      "static/config"
+      "static/config",
+      "static/java"
     ]
   },
   "dependencies": {

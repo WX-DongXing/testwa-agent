@@ -107,6 +107,14 @@ class Login extends Component {
           }, error => {
             if(error) console.log(error)
           })
+          session.cookies.set({
+            url: LOGIN_URL,
+            name: 'password',
+            value: this.props.password,
+            expirationDate: expirationDate
+          }, error => {
+            if(error) console.log(error)
+          })
           anime({
             targets: '.login-background .login-svg-path',
             d: [

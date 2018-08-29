@@ -1,9 +1,11 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, Menu } from 'electron'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
 import { addEventListener, ipcMainRemoveListeners } from './eventListener'
+import { menu } from './menu'
+import { is } from 'electron-util'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 // disable electron security warnings
@@ -22,6 +24,11 @@ function createMainWindow() {
     titleBarStyle: 'hiddenInset',
     show: false
   })
+
+  /**
+   * macOS menu
+   */
+  if (is.macos) Menu.setApplicationMenu(Menu.buildFromTemplate(menu))
 
   /**
    * add all event listener to main process
