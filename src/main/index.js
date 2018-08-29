@@ -3,15 +3,13 @@
 import { app, BrowserWindow } from 'electron'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
-import addEventListener from './eventListener'
-
-const logger = require('electron-timber')
+import { addEventListener, ipcMainRemoveListeners } from './eventListener'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 // disable electron security warnings
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = true
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
-let mainWindow
+export let mainWindow
 
 function createMainWindow() {
 
@@ -28,12 +26,12 @@ function createMainWindow() {
   /**
    * add all event listener to main process
    */
-  addEventListener(window)
+  addEventListener()
 
-  // if (isDevelopment) {
+  if (isDevelopment) {
     window.webContents.openDevTools()
     BrowserWindow.addDevToolsExtension('/Users/xd/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.15.3_0')
-  // }
+  }
 
   if (isDevelopment) {
     window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`)
@@ -54,6 +52,10 @@ function createMainWindow() {
   })
 
   window.on('closed', () => {
+    /**
+     * remove all of ipcMain event listeners
+     */
+    ipcMainRemoveListeners()
     mainWindow = null
   })
 

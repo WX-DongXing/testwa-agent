@@ -62,6 +62,10 @@
       margin: 0 5px;
       -webkit-app-region: no-drag;
 
+      &.home {
+        color: #cc4c23;
+      }
+
       &.white {
         color: #ffffff;
       }
