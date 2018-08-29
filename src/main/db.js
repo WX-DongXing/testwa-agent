@@ -4,8 +4,6 @@ const FileSync = require('lowdb/adapters/FileSync')
 const adapter = new FileSync(path.join(__static, '/config/config.json'))
 const db = low(adapter)
 
-let data
-
 /**
  * init db
  */
@@ -83,9 +81,9 @@ function getEnv() {
 
 function getServePath() {
   return {
-    node_path: db.get('config.env.node.path').value(),
-    sdk_path: db.get('config.env.sdk.path').value(),
-    appium_path: db.get('config.env.appium.path').value()
+    nodePath: db.get('config.env.node.path').value(),
+    sdkPath: db.get('config.env.sdk.path').value(),
+    appiumPath: db.get('config.env.appium.path').value()
   }
 }
 

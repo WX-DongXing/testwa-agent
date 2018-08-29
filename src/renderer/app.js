@@ -31,9 +31,9 @@ class App extends Component {
       }
     })
 
-    // session.cookies.remove(LOGIN_URL, 'username', error => {
-    //   if (error) console.log(error)
-    // })
+    session.cookies.remove(LOGIN_URL, 'username', error => {
+      if (error) console.log(error)
+    })
 
     session.cookies.get({name: 'username'}, (error, cookies) => {
       if (cookies.length === 0) {

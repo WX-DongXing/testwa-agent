@@ -35,7 +35,7 @@ class Terminal extends Component {
   }
 
   componentDidMount() {
-    ipcRenderer.on('serve-log', (event, args) => {
+    ipcRenderer.on('service-log', (event, args) => {
       console.log(args)
     })
 
@@ -63,7 +63,7 @@ class Terminal extends Component {
                 type: true,
                 message: '服务开启!'
               })
-              ipcRenderer.send('run-service')
+              ipcRenderer.send('run-service', cookie)
             } else {
               this.setState({
                 run: false,

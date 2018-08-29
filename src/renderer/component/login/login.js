@@ -127,6 +127,7 @@ class Login extends Component {
           this.setState({open: true, type: true})
           setTimeout(() => {
             this.props.history.push('/')
+            ipcRenderer.send('init_check_env')
           }, 300);
         } else {
           this.setState({open: true, type: false})
