@@ -1,5 +1,6 @@
 import { ipcMain, dialog } from 'electron'
 import path from 'path'
+import util from 'util'
 import childProcess from 'child_process'
 import { getScreen, setEnv, getEnv, isPass, getServePath, db } from './db'
 import persistent from './persistent'
@@ -7,10 +8,10 @@ import { mainWindow as window } from './index'
 import { is } from 'electron-util'
 import { first } from 'rxjs/operators'
 const exec = childProcess.exec
+const execPromise = util.promisify(require('child_process').exec)
 const rootPath = is.development ? path.resolve(__static, '..') : path.resolve(__dirname, '..')
 const targetPath = path.join(rootPath, 'static/java/resources')
 const execPath = path.join(rootPath, 'static/java')
-
 let serveProcess
 
 function addEventListener() {
@@ -78,13 +79,15 @@ function addEventListener() {
     event.sender.send('reset-window', true)
   })
 
+  /**
+   * run service event
+   */
   ipcMain.on('run-service', (event, cookie) => {
     const envPaths = getServePath()
     const command = `sh start.sh -u "${cookie.username}" -p "${cookie.password}" -n "${envPaths.nodePath}" -s "${envPaths.sdkPath}" -a "${envPaths.appiumPath}" -r "${targetPath}"`
     serveProcess = exec(command, { cwd: execPath, encoding: 'utf-8', maxBuffer: 5000 * 1024 })
 
     serveProcess.on('error', (error) => {
-      console.log('error: ', error)
       event.sender.send('service-log', `Error: ${error}`)
     })
 
@@ -97,10 +100,27 @@ function addEventListener() {
     })
   })
 
-  ipcMain.on('service-serve', (event) => {
-    event.sender.send('service-log', 'stopped')
+  /**
+   * stop service event
+   */
+  ipcMain.on('stop-service', (event) => {
+    stopService()
+      .then(() => {
+        event.sender.send('service-log', '> > 服务关闭！')
+      })
+      .catch(e => {
+        console.log(e)
+      })
   })
 
+}
+
+/**
+ * kill service
+ * @returns {Promise<any | void | string | Buffer>}
+ */
+async function stopService() {
+ return await execPromise('sh stop.sh', { cwd: execPath, encoding: 'utf-8'})
 }
 
 function ipcMainRemoveListeners() {
@@ -108,11 +128,14 @@ function ipcMainRemoveListeners() {
   ipcMain.removeAllListeners('config_check_env')
   ipcMain.removeAllListeners('open-file-dialog')
   ipcMain.removeAllListeners('store-appium')
-  ipcMain.removeAllListeners('run-serve')
-  ipcMain.removeAllListeners('stop-serve')
+  ipcMain.removeAllListeners('run-service')
+  ipcMain.removeAllListeners('stop-service')
 }
+
+
 
 export {
   addEventListener,
-  ipcMainRemoveListeners
+  ipcMainRemoveListeners,
+  stopService
 }

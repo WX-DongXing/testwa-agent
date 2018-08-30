@@ -3,9 +3,9 @@
 import { app, BrowserWindow, Menu } from 'electron'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
-import { addEventListener, ipcMainRemoveListeners } from './eventListener'
-import { menu } from './menu'
+import { addEventListener, ipcMainRemoveListeners, stopService } from './eventListener'
 import { is } from 'electron-util'
+import { menu } from './menu'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 // disable electron security warnings
@@ -35,10 +35,10 @@ function createMainWindow() {
    */
   addEventListener()
 
-  // if (isDevelopment) {
+  if (isDevelopment) {
     window.webContents.openDevTools()
     BrowserWindow.addDevToolsExtension('/Users/xd/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.15.3_0')
-  // }
+  }
 
   if (isDevelopment) {
     window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`)
@@ -63,7 +63,13 @@ function createMainWindow() {
      * remove all of ipcMain event listeners
      */
     ipcMainRemoveListeners()
-    mainWindow = null
+    stopService()
+      .then(() => {
+        mainWindow = null
+      })
+      .catch(e => {
+        console.log(e)
+      })
   })
 
   window.webContents.on('devtools-opened', () => {
@@ -94,4 +100,12 @@ app.on('activate', () => {
 // create main BrowserWindow when electron is ready
 app.on('ready', () => {
   mainWindow = createMainWindow()
+})
+
+// app will quit event
+app.on('will-quit', (event) => {
+  stopService()
+    .then(() => {
+      app.quit()
+    })
 })

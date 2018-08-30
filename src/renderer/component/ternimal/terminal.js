@@ -16,6 +16,7 @@ import PaletteRoundedIcon from '@material-ui/icons/PaletteRounded';
 import { getServePath } from '../../../main/db'
 import './terminal.scss'
 const session = remote.session.defaultSession
+let container, logs = []
 
 class Terminal extends Component {
   constructor(props) {
@@ -38,8 +39,11 @@ class Terminal extends Component {
   }
 
   componentDidMount() {
+    container = document.getElementById('container')
     ipcRenderer.on('service-log', (event, args) => {
-      this.setState({ log: this.state.log.concat([args])})
+      logs = [...logs, ...[args]]
+      if (logs.length > 30) logs = logs.slice(0, 2)
+      this.setState({ log: logs})
     })
 
     ipcRenderer.on('reset-window', (event, args) => {
@@ -137,6 +141,12 @@ class Terminal extends Component {
     }))
   }
 
+  scrollToBottom() {
+    setTimeout(() => {
+      container.scrollTop = container.scrollHeight
+    }, 0)
+  }
+
   render() {
     return (
       <div className={ this.state.color }>
@@ -213,9 +223,10 @@ class Terminal extends Component {
           </IconButton>
         </div>
         <div className="terminal-main">
-          <div className="terminal-log-container">
+          <div className="terminal-log-container" id="container">
             {
               this.state.log.map((item, index)=> {
+                this.scrollToBottom()
                 return <p key={index}>{item}</p>
               })
             }
