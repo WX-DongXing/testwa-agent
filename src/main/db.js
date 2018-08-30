@@ -1,50 +1,47 @@
-const path = require('path')
-const low = require('lowdb')
-const FileSync = require('lowdb/adapters/FileSync')
-const adapter = new FileSync(path.join(__static, '/config/config.json'))
+import path from 'path'
+import low from 'lowdb'
+import FileSync from 'lowdb/adapters/FileSync'
+const adapter = new FileSync(path.join(__static, 'db/db.json'))
 const db = low(adapter)
 
 /**
  * init db
  */
-(function initDb () {
-  db.defaults({
-    config: {
-      screen: {
-        width: 920,
-        height: 576
+db.defaults({
+  config: {
+    screen: {
+      width: 920,
+      height: 576
+    },
+    env: {
+      java: {
+        version: '',
+        path: ''
       },
-      env: {
-        java: {
-          version: '',
-          path: ''
-        },
-        python: {
-          version: '',
-          path: ''
-        },
-        node: {
-          version: '',
-          path: ''
-        },
-        adb: {
-          version: '',
-          path: ''
-        },
-        sdk: {
-          version: '',
-          path: ''
-        },
-        appium: {
-          version: '',
-          path: ''
-        }
+      python: {
+        version: '',
+        path: ''
       },
+      node: {
+        version: '',
+        path: ''
+      },
+      adb: {
+        version: '',
+        path: ''
+      },
+      sdk: {
+        version: '',
+        path: ''
+      },
+      appium: {
+        version: '',
+        path: ''
+      }
     }
-  })
-    .write()
-  return db.get('config').value()
-})()
+  }
+})
+  .write()
 
 /**
  * set screen width and height
@@ -59,7 +56,7 @@ function setScreen (width, height) {
 }
 
 /**
- * set env program config
+ * set env program db
  * @param name
  * @param version
  * @param path
@@ -76,14 +73,14 @@ function setEnv(name, version, path) {
  * @returns {*}
  */
 function getEnv() {
-  return db.get('config.env').value()
+  return db.read().get('config.env').value()
 }
 
 function getServePath() {
   return {
-    nodePath: db.get('config.env.node.path').value(),
-    sdkPath: db.get('config.env.sdk.path').value(),
-    appiumPath: db.get('config.env.appium.path').value()
+    nodePath: db.read().get('config.env.node.path').value(),
+    sdkPath: db.read().get('config.env.sdk.path').value(),
+    appiumPath: db.read().get('config.env.appium.path').value()
   }
 }
 
@@ -92,9 +89,13 @@ function getServePath() {
  * @returns {*}
  */
 function getScreen() {
-  return db.get('config.screen').value()
+  return db.read().get('config.screen').value()
 }
 
+/**
+ * check env is pass of all
+ * @returns {any}
+ */
 function isPass() {
   return Object.values(getEnv()).map(item => item.path).reduce((pre, cur) => Boolean(pre) && Boolean(cur))
 }

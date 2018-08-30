@@ -77,8 +77,6 @@ function addEventListener() {
 
   ipcMain.on('run-service', (event, cookie) => {
     const envPaths = getServePath()
-    console.log(getEnv())
-    console.log(getServePath())
     const command = `sh start.sh -u "${cookie.username}" -p "${cookie.password}" -n "${envPaths.nodePath}" 
     -s "${envPaths.sdkPath}" -a "${envPaths.appiumPath}" -r "${targetPath}"`
     serveProcess = childProcess.execFile(command, { cwd: execPath, encoding: 'utf-8', maxBuffer: 5000 * 1024 }, ((error, stdout, stderr) => {
