@@ -4,9 +4,12 @@ import childProcess from 'child_process'
 import { getScreen, setEnv, getEnv, isPass, getServePath, db } from './db'
 import persistent from './persistent'
 import { mainWindow as window } from './index'
+import { is } from 'electron-util'
 import { first } from 'rxjs/operators'
-const targetPath = path.join(__static, 'java/resources')
-const execPath = path.join(__static, 'java')
+const exec = childProcess.exec
+const rootPath = is.development ? path.resolve(__static, '..') : path.resolve(__dirname, '..')
+const targetPath = path.join(rootPath, 'static/java/resources')
+const execPath = path.join(rootPath, 'static/java')
 
 let serveProcess
 
@@ -77,11 +80,10 @@ function addEventListener() {
 
   ipcMain.on('run-service', (event, cookie) => {
     const envPaths = getServePath()
-    const command = `sh start.sh -u "${cookie.username}" -p "${cookie.password}" -n "${envPaths.nodePath}" 
-    -s "${envPaths.sdkPath}" -a "${envPaths.appiumPath}" -r "${targetPath}"`
-    serveProcess = childProcess.execFile(command, { cwd: execPath, encoding: 'utf-8', maxBuffer: 5000 * 1024 }, ((error, stdout, stderr) => {
-      event.sender.send('service-log', `${error.toString() || stdout.toString() || stderr.toString()}`)
-    }))
+    const command = `sh start.sh -u "${cookie.username}" -p "${cookie.password}" -n "${envPaths.nodePath}" -s "${envPaths.sdkPath}" -a "${envPaths.appiumPath}" -r "${targetPath}"`
+    serveProcess = exec(command, { cwd: execPath, encoding: 'utf-8', maxBuffer: 5000 * 1024 }, (error, stdout, stderr) => {
+      event.sender.send('service-log', `${error || stdout || stderr}`)
+    })
   })
 
   ipcMain.on('service-serve', (event) => {

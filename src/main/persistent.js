@@ -33,7 +33,7 @@ export default function persistent() {
     }
     envs.filter((value, index) => index % 2 !== 0)
       .forEach(env => {
-        default_env[env.name.split('.')[0]].path = env.value
+        default_env[env.name.split('.')[0]].path = env.value.split('\n')[0]
       })
     default_env.node.version = isExist(envs[0].value, envs[0].value.split('v')[1])
     default_env.java.version = isExist(envs[2].value, new RegExp('\\"(.*?)\\"').exec(envs[2].value)[1])

@@ -1,7 +1,9 @@
 import path from 'path'
 import low from 'lowdb'
 import FileSync from 'lowdb/adapters/FileSync'
-const adapter = new FileSync(path.join(__static, 'db/db.json'))
+import { is } from 'electron-util'
+const target = is.development ? path.join(__static, 'db/db.json') : path.join(path.resolve(__dirname, '..'), 'static/db/db.json')
+const adapter = new FileSync(target)
 const db = low(adapter)
 
 /**
