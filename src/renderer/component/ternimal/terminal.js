@@ -26,17 +26,20 @@ class Terminal extends Component {
       anchorEl: null,
       type: false,
       open: false,
-      message: ''
+      message: '',
+      log: []
     }
     this.run = this.run.bind(this)
     this.openTheme = this.openTheme.bind(this)
     this.closeTheme = this.closeTheme.bind(this)
     this.handleClose = this.handleClose.bind(this)
+    this.navigateToConfig = this.navigateToConfig.bind(this)
+    this.clearLog = this.clearLog.bind(this)
   }
 
   componentDidMount() {
     ipcRenderer.on('service-log', (event, args) => {
-      console.log(args)
+      this.setState({ log: this.state.log.concat([args])})
     })
 
     ipcRenderer.on('reset-window', (event, args) => {
@@ -92,6 +95,14 @@ class Terminal extends Component {
     this.closeTheme()
   }
 
+  navigateToConfig() {
+    this.props.history.push('/control/config')
+  }
+
+  clearLog() {
+    this.setState({ log: [] })
+  }
+
   handleClose(event, reason) {
     if (reason === 'clickaway') {
       return;
@@ -145,11 +156,9 @@ class Terminal extends Component {
           />
         </Snackbar>
         <div className="terminal-drag-title">
-          <Link to='/control/config'>
-            <IconButton aria-label="white" className="icon-button home">
-              <SettingsRoundedIcon />
-            </IconButton>
-          </Link>
+          <IconButton aria-label="white" className="icon-button home" onClick={this.navigateToConfig} disabled={this.state.run}>
+            <SettingsRoundedIcon />
+          </IconButton>
           <IconButton className="icon-button theme"
                       aria-label="theme"
                       aria-owns={Boolean(this.state.anchorEl) ? 'long-menu' : null}
@@ -199,12 +208,17 @@ class Terminal extends Component {
                 </IconButton>
 
           }
-          <IconButton aria-label="clear" className="icon-button clear">
+          <IconButton aria-label="clear" className="icon-button clear" onClick={this.clearLog}>
             <ClearAllRoundedIcon />
           </IconButton>
         </div>
         <div className="terminal-main">
           <div className="terminal-log-container">
+            {
+              this.state.log.map((item, index)=> {
+                return <p key={index}>{item}</p>
+              })
+            }
           </div>
         </div>
       </div>

@@ -1,6 +1,8 @@
 {
-  "name": "testwa-agent",
+  "name": "TestwaAgent",
   "version": "2.0.0",
+  "author": "Dong Xing <xingdong.com@live.com>",
+  "description": "Testwa Agent Application",
   "license": "",
   "scripts": {
     "dev": "electron-webpack dev",

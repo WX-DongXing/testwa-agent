@@ -81,8 +81,19 @@ function addEventListener() {
   ipcMain.on('run-service', (event, cookie) => {
     const envPaths = getServePath()
     const command = `sh start.sh -u "${cookie.username}" -p "${cookie.password}" -n "${envPaths.nodePath}" -s "${envPaths.sdkPath}" -a "${envPaths.appiumPath}" -r "${targetPath}"`
-    serveProcess = exec(command, { cwd: execPath, encoding: 'utf-8', maxBuffer: 5000 * 1024 }, (error, stdout, stderr) => {
-      event.sender.send('service-log', `${error || stdout || stderr}`)
+    serveProcess = exec(command, { cwd: execPath, encoding: 'utf-8', maxBuffer: 5000 * 1024 })
+
+    serveProcess.on('error', (error) => {
+      console.log('error: ', error)
+      event.sender.send('service-log', `Error: ${error}`)
+    })
+
+    serveProcess.stdout.on('data', (stdout) => {
+      event.sender.send('service-log', stdout)
+    })
+
+    serveProcess.stderr.on('data', (stderr) => {
+      event.sender.send('service-log', stderr)
     })
   })
 
