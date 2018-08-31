@@ -1,4 +1,4 @@
-import { ipcMain, dialog } from 'electron'
+import { ipcMain, dialog, session } from 'electron'
 import path from 'path'
 import util from 'util'
 import childProcess from 'child_process'
@@ -12,6 +12,7 @@ const execPromise = util.promisify(require('child_process').exec)
 const rootPath = is.development ? path.resolve(__static, '..') : path.resolve(__dirname, '..')
 const targetPath = path.join(rootPath, 'static/java/resources')
 const execPath = path.join(rootPath, 'static/java')
+const LOGIN_URL = 'http://api.test.testwa.com/v1/auth/login'
 let serveProcess
 
 function addEventListener() {
@@ -69,6 +70,8 @@ function addEventListener() {
   })
 
   ipcMain.on('resetting-window', (event) => {
+    session.defaultSession.cookies.remove(LOGIN_URL, 'username', (error) => { if (error) console.log(error) })
+    session.defaultSession.cookies.remove(LOGIN_URL, 'password', (error) => { if (error) console.log(error) })
     window.setOpacity(0)
     window.setSize(400, 600, true)
     window.setResizable(false)

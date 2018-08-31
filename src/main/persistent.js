@@ -1,3 +1,4 @@
+import path from 'path'
 import { setEnv } from './db';
 import { check_env } from './spawn'
 import { map } from 'rxjs/operators'
@@ -40,7 +41,7 @@ export default function persistent() {
     default_env.python.version = isExist(envs[4].value, envs[4].value.split(' ')[1])
     default_env.adb.version = isExist(envs[6].value, envs[6].value.split('\n')[0].split(' ')[4])
     default_env.sdk.version = ''
-    default_env.sdk.path = isExist(envs[7].value, envs[7].value.split('/platform-tools/adb')[0])
+    default_env.sdk.path = isExist(envs[7].value, path.resolve(envs[7].value, '..', '..'))
     for (let [k, v] of Object.entries(default_env)) {
       setEnv(k, v.version, v.path)
     }

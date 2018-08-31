@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import { Link } from 'react-router-dom';
 import { ipcRenderer, remote } from 'electron'
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -45,7 +44,6 @@ class Terminal extends Component {
       if (logs.length > 30) logs = logs.slice(0, 2)
       this.setState({ log: logs})
     })
-
     ipcRenderer.on('reset-window', (event, args) => {
       if (args) this.props.history.push('/login')
     })

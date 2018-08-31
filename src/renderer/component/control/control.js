@@ -1,19 +1,41 @@
 import React, { Component } from 'react'
 import {Switch, Route, withRouter, NavLink} from 'react-router-dom'
-import {AppBar, Divider, List, ListItem, ListItemIcon, Toolbar, Tooltip, Icon} from '@material-ui/core';
+import {AppBar, Divider, List, ListItem, ListItemIcon, IconButton, Toolbar, Tooltip, Icon} from '@material-ui/core';
 import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import CodeRoundedIcon from '@material-ui/icons/CodeRounded';
 import SendRoundedIcon from '@material-ui/icons/SendRounded';
+import ExitToAppRounded from '@material-ui/icons/ExitToAppRounded';
 import Config from './config/config';
 import Simple from './simple/simple';
 import './control.scss'
+import {ipcRenderer} from 'electron';
 
 class Control extends Component {
+  constructor(props) {
+    super(props)
+    this.navigateToLogin = this.navigateToLogin.bind(this)
+  }
+  componentDidMount(){
+    ipcRenderer.on('reset-window', (event, args) => {
+      if (args) this.props.history.push('/login')
+    })
+  }
+
+  navigateToLogin() {
+    ipcRenderer.send('resetting-window')
+  }
+
   render() {
     return (
       <div className="control-wrap">
         <AppBar position="static" className="control-drag-bar">
-          <Toolbar variant="dense"></Toolbar>
+          <Toolbar variant="dense">
+            <Tooltip title="退出登录">
+              <IconButton color="inherit" aria-label="Menu" onClick={this.navigateToLogin}>
+                <ExitToAppRounded />
+              </IconButton>
+            </Tooltip>
+          </Toolbar>
         </AppBar>
         <div className="control-main">
           <List component="nav" className="control-side">

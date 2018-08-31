@@ -6,6 +6,10 @@
   justify-content: space-between;
 
   .control-drag-bar {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: center;
     background: #334955;
     -webkit-app-region: drag;
   }

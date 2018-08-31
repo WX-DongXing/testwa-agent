@@ -104,6 +104,10 @@ app.on('ready', () => {
 
 // app will quit event
 app.on('will-quit', (event) => {
+  /**
+   * remove all of ipcMain event listeners
+   */
+  ipcMainRemoveListeners()
   stopService()
     .then(() => {
       app.quit()
