@@ -1,6 +1,6 @@
 import defaultShell from 'spawn-default-shell'
 import {fromEvent, merge, zip} from 'rxjs';
-import { mapTo, map } from 'rxjs/operators'
+import { mapTo, map, first } from 'rxjs/operators'
 import { is } from 'electron-util'
 
 function spawn(name, command,  type) {
@@ -10,7 +10,10 @@ function spawn(name, command,  type) {
     ? fromEvent(child.stderr, 'data').pipe(map(v => { return { name: name, value: v.toString() } }))
     : fromEvent(child.stderr, 'data').pipe(mapTo({ name: name, value: '' }))
   let child_err = fromEvent(child, 'error').pipe(mapTo({ name: name, value: '' }))
-  return merge(child_stdout, child_stderr, child_err)
+  let child_close = fromEvent(child, 'close').pipe(mapTo({ name: name, value: '' }))
+  return merge(child_stdout, child_stderr, child_err, child_close).pipe(
+    first()
+  )
 }
 
 function check_env() {

@@ -20,7 +20,8 @@ function createMainWindow() {
     height: 600,
     resizable: false,
     center: true,
-    frame: false,
+    frame: !is.macos,
+    autoHideMenuBar: true,
     titleBarStyle: 'hiddenInset',
     show: false
   })
@@ -37,7 +38,7 @@ function createMainWindow() {
 
   if (isDevelopment) {
     window.webContents.openDevTools()
-    BrowserWindow.addDevToolsExtension('/Users/xd/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.15.3_0')
+    // BrowserWindow.addDevToolsExtension('/Users/xd/Library/Application Support/Google/Chrome/Default/Extensions/lmhkpmbekcpmknklioeibfkpmmfibljd/2.15.3_0')
   }
 
   if (isDevelopment) {
