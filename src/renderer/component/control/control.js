@@ -3,7 +3,7 @@ import {Switch, Route, withRouter, NavLink} from 'react-router-dom'
 import {AppBar, Divider, List, ListItem, ListItemIcon, IconButton, Toolbar, Tooltip, Icon} from '@material-ui/core';
 import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import CodeRoundedIcon from '@material-ui/icons/CodeRounded';
-import SendRoundedIcon from '@material-ui/icons/SendRounded';
+// import SendRoundedIcon from '@material-ui/icons/SendRounded';
 import ExitToAppRounded from '@material-ui/icons/ExitToAppRounded';
 import Config from './config/config';
 import Simple from './simple/simple';
@@ -15,10 +15,15 @@ class Control extends Component {
     super(props)
     this.navigateToLogin = this.navigateToLogin.bind(this)
   }
+
   componentDidMount(){
     ipcRenderer.on('reset-window', (event, args) => {
       if (args) this.props.history.push('/login')
     })
+  }
+
+  componentWillUnmount() {
+    ipcRenderer.removeAllListeners('reset-window')
   }
 
   navigateToLogin() {

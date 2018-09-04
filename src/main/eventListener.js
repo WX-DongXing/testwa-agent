@@ -7,12 +7,12 @@ import persistent from './persistent'
 import { mainWindow as window } from './index'
 import { is } from 'electron-util'
 import { first } from 'rxjs/operators'
+import { ENV, LOGIN_URL } from './config';
 const exec = childProcess.exec
 const execPromise = util.promisify(require('child_process').exec)
 const rootPath = is.development ? path.resolve(__static, '..') : path.resolve(__dirname, '..')
 const targetPath = path.join(rootPath, 'static/java/resources')
 const execPath = path.join(rootPath, 'static/java')
-const LOGIN_URL = 'http://api.test.testwa.com/v1/auth/login'
 let serveProcess
 
 function addEventListener() {
@@ -20,7 +20,6 @@ function addEventListener() {
    * check env params and set window size and resizable when app init
    */
   ipcMain.on('init_check_env', (event) => {
-    console.log('init check env')
     persistent().pipe(first())
       .subscribe(() => {
         window.setOpacity(0)
@@ -88,7 +87,7 @@ function addEventListener() {
    */
   ipcMain.on('run-service', (event, cookie) => {
     const envPaths = getServePath()
-    const command = `sh start.sh -u "${cookie.username}" -p "${cookie.password}" -n "${envPaths.nodePath}" -s "${envPaths.sdkPath}" -a "${envPaths.appiumPath}" -r "${targetPath}"`
+    const command = `sh start.sh -t "${ENV}" -u "${cookie.username}" -p "${cookie.password}" -n "${envPaths.nodePath}" -s "${envPaths.sdkPath}" -a "${envPaths.appiumPath}" -r "${targetPath}"`
     serveProcess = exec(command, { cwd: execPath, encoding: 'utf-8', maxBuffer: 5000 * 1024 })
 
     serveProcess.on('error', (error) => {
@@ -108,6 +107,7 @@ function addEventListener() {
    * stop service event
    */
   ipcMain.on('stop-service', (event) => {
+    serveProcess.kill()
     stopService()
       .then(() => {
         event.sender.send('service-log', '> > 服务关闭！')

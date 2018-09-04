@@ -9,8 +9,8 @@ import Control from './component/control/control'
 import Terminal from './component/ternimal/terminal';
 import {CircularProgress} from '@material-ui/core'
 import '././style.scss'
+import { LOGIN_URL } from '../main/config';
 const session = remote.session.defaultSession
-const LOGIN_URL = 'http://api.test.testwa.com/v1/auth/login'
 
 class App extends Component {
 
@@ -35,7 +35,7 @@ class App extends Component {
     //   if (error) console.log(error)
     // })
 
-    session.cookies.get({name: 'username'}, (error, cookies) => {
+    session.cookies.get({name: 'username', url: LOGIN_URL}, (error, cookies) => {
       if (cookies.length === 0) {
         this.props.history.push('/login')
       } else {

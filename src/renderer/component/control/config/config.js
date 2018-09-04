@@ -68,6 +68,11 @@ class Config extends Component {
     })
   }
 
+  componentWillUnmount() {
+    ipcRenderer.removeAllListeners('config_check_env_result')
+    ipcRenderer.removeAllListeners('selected-directory')
+  }
+
   updateAppiumPath(path) {
     ipcRenderer.send('store-appium', { version: '', path: path})
     this.props.onUpdateEnv({

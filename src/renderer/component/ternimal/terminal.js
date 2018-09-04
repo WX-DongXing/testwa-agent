@@ -14,6 +14,7 @@ import SettingsRoundedIcon from '@material-ui/icons/SettingsRounded';
 import PaletteRoundedIcon from '@material-ui/icons/PaletteRounded';
 import { getServePath } from '../../../main/db'
 import './terminal.scss'
+import {LOGIN_URL} from '../../../main/config';
 const session = remote.session.defaultSession
 let container, logs = []
 
@@ -47,6 +48,11 @@ class Terminal extends Component {
     ipcRenderer.on('reset-window', (event, args) => {
       if (args) this.props.history.push('/login')
     })
+  }
+
+  componentWillUnmount() {
+    ipcRenderer.removeAllListeners('service-log')
+    ipcRenderer.removeAllListeners('reset-window')
   }
 
   run() {
@@ -132,7 +138,7 @@ class Terminal extends Component {
 
   promiseCookie(name) {
     return new Promise(((resolve, reject) => {
-      session.cookies.get({name: name}, (error, cookies) => {
+      session.cookies.get({name: name, url: LOGIN_URL}, (error, cookies) => {
         if (error) reject(error)
         resolve(cookies)
       })
@@ -151,7 +157,7 @@ class Terminal extends Component {
         <Snackbar
           anchorOrigin={{
             vertical: 'bottom',
-            horizontal: 'left',
+            horizontal: 'right',
           }}
           open={ this.state.open }
           autoHideDuration={ 3000 }

@@ -7,8 +7,8 @@ import {Icon, Button, Typography, Paper, Snackbar} from '@material-ui/core';
 import { MySnackbarContentWrapper } from '../custormSnackbars/custormSnackbars';
 import * as anime from 'animejs';
 import '../login/login.scss';
+import { LOGIN_URL} from '../../../main/config';
 const session = remote.session.defaultSession
-const LOGIN_URL = 'http://api.test.testwa.com/v1/auth/login'
 const expirationDate = Math.round(new Date().getTime() / 1000) + 24 * 60 * 60 * 30
 
 class Login extends Component {
@@ -47,6 +47,10 @@ class Login extends Component {
       easing: 'easeOutQuad',
       duration: 1000,
     })
+  }
+
+  componentWillUnmount() {
+    ipcRenderer.removeAllListeners('check_env_result')
   }
 
   updateUsername(event) {
@@ -144,7 +148,7 @@ class Login extends Component {
         <Snackbar
           anchorOrigin={{
             vertical: 'bottom',
-            horizontal: 'left',
+            horizontal: 'right',
           }}
           open={this.state.open}
           autoHideDuration={3000}
