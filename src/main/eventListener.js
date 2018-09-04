@@ -2,7 +2,7 @@ import { ipcMain, dialog, session } from 'electron'
 import path from 'path'
 import util from 'util'
 import childProcess from 'child_process'
-import { getScreen, setEnv, getEnv, isPass, getServePath, db } from './db'
+import { getScreen, setEnv, getEnv, isPass, getServePath } from './db'
 import persistent from './persistent'
 import { mainWindow as window } from './index'
 import { is } from 'electron-util'
@@ -19,7 +19,8 @@ function addEventListener() {
   /**
    * check env params and set window size and resizable when app init
    */
-  ipcMain.once('init_check_env', (event) => {
+  ipcMain.on('init_check_env', (event) => {
+    console.log('init check env')
     persistent().pipe(first())
       .subscribe(() => {
         window.setOpacity(0)
@@ -126,6 +127,9 @@ async function stopService() {
  return await execPromise('sh stop.sh', { cwd: execPath, encoding: 'utf-8'})
 }
 
+/**
+ * ipcMain remove all of listeners
+ */
 function ipcMainRemoveListeners() {
   ipcMain.removeAllListeners('int_check_env')
   ipcMain.removeAllListeners('config_check_env')

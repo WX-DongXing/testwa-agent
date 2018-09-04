@@ -1,0 +1,34 @@
+{
+  "config": {
+    "screen": {
+      "width": 920,
+      "height": 576
+    },
+    "env": {
+      "java": {
+        "version": "prefix",
+        "path": ""
+      },
+      "python": {
+        "version": "is",
+        "path": "nvm is not compatible with the npm config \"prefix\" option: currently set to \"/usr/local\""
+      },
+      "node": {
+        "version": "",
+        "path": ""
+      },
+      "adb": {
+        "version": "",
+        "path": ""
+      },
+      "sdk": {
+        "version": "",
+        "path": ""
+      },
+      "appium": {
+        "version": "",
+        "path": ""
+      }
+    }
+  }
+}
