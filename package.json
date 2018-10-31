@@ -1,6 +1,6 @@
 {
   "name": "testwa-agent",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "author": "Dong Xing <xingdong.com@live.com>",
   "description": "Testwa Agent Application",
   "license": "",
@@ -33,7 +33,7 @@
       "icon": "build/icons/icon.ico"
     },
     "linux": {
-      "category": "Testing",
+      "category": "Utility",
       "icon": "build/icons"
     }
   },
