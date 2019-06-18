@@ -87,8 +87,21 @@ function addEventListener() {
    */
   ipcMain.on('run-service', (event, cookie) => {
     const envPaths = getServePath()
-    const command = `sh start.sh -t "${ENV}" -u "${cookie.username}" -p "${cookie.password}" -n "${envPaths.nodePath}" -s "${envPaths.sdkPath}" -a "${envPaths.appiumPath}" -r "${targetPath}"`
-    serveProcess = exec(command, { cwd: execPath, encoding: 'utf-8', maxBuffer: 5000 * 1024 })
+    if (is.macos || is.linux) {
+      const command = `sh start.sh -t "${ENV}" -u "${cookie.username}" -p "${cookie.password}" -n "${envPaths.nodePath}" -s "${envPaths.sdkPath}" -a "${envPaths.appiumPath}" -r "${targetPath}"`
+      serveProcess = exec(command, { cwd: execPath, encoding: 'utf-8', maxBuffer: 5000 * 1024 })
+    } else if (is.windows) {
+      const command = `java -jar -server -Xms1024m -Xmx2048m TestwaJar.jar --spring.profiles.active="${ENV}"`
+        + ` -Dorg.springframework.boot.logging.LoggingSystem=none`
+        + ` --username="${cookie.username}"`
+        + ` --password="${cookie.password}"`
+        + ` --node.excute.path="${envPaths.nodePath}"`
+        + ` --ANDROID_HOME="${envPaths.sdkPath}"`
+        + ` --appium.js.path="${envPaths.appiumPath}"`
+        + ` --distest.agent.resources="${targetPath}"`
+      console.log('Java command', command)
+      serveProcess = exec(command, { cwd: execPath, encoding: 'utf-8', maxBuffer: 5000 * 1024 })
+    }
 
     serveProcess.on('error', (error) => {
       event.sender.send('service-log', `Error: ${error}`)
@@ -108,13 +121,18 @@ function addEventListener() {
    */
   ipcMain.on('stop-service', (event) => {
     serveProcess.kill()
-    stopService()
-      .then(() => {
-        event.sender.send('service-log', '> > 服务关闭！')
-      })
-      .catch(e => {
-        console.log(e)
-      })
+    if (is.macos || is.linux) {
+      stopService()
+        .then(() => {
+          event.sender.send('service-log', '> > 服务关闭！')
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    } else if (is.windows) {
+      console.log('Java stop')
+      event.sender.send('service-log', '> > 服务关闭！')
+    }
   })
 
 }
