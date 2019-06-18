@@ -71,7 +71,7 @@ def package_linux(c):
 
 ''' windows '''
 @task
-def package_linux(c):
+def package_win(c):
     print('------------------------------------------------------------------------------------')
     print('|                                                                                  |')
     print('|                           Testwa Auto Package At Windows                           |')
