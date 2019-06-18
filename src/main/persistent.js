@@ -38,7 +38,7 @@ export default function persistent() {
       })
     default_env.node.version = isExist(envs[0].value, envs[0].value.split('v')[1])
     default_env.java.version = isExist(envs[2].value, new RegExp('\\"(.*?)\\"').exec(envs[2].value) ? new RegExp('\\"(.*?)\\"').exec(envs[2].value)[1] : '')
-    default_env.python.version = isExist(envs[4].value, envs[4].value.split(' ')[1])
+    default_env.python.version = isExist(envs[4].value,new RegExp('[2-3].[0-9].([0-9]|1[0-9])').exec(envs[4].value) ? new RegExp('[2-3].[0-9].([0-9]|1[0-9])').exec(envs[4].value)[0] : '')
     default_env.adb.version = isExist(envs[6].value, envs[6].value.split('\n')[0].split(' ')[4])
     default_env.sdk.version = ''
     default_env.sdk.path = isExist(envs[7].value, path.resolve(envs[7].value, '..', '..'))

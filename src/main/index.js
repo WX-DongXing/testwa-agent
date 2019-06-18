@@ -18,7 +18,7 @@ function createMainWindow() {
   const window = new BrowserWindow({
     width: 400,
     height: 600,
-    resizable: false,
+    resizable: true,
     center: true,
     frame: !is.macos,
     autoHideMenuBar: true,

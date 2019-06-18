@@ -131,7 +131,7 @@ async function stopService() {
  * ipcMain remove all of listeners
  */
 function ipcMainRemoveListeners() {
-  ipcMain.removeAllListeners('int_check_env')
+  ipcMain.removeAllListeners('init_check_env')
   ipcMain.removeAllListeners('config_check_env')
   ipcMain.removeAllListeners('open-file-dialog')
   ipcMain.removeAllListeners('store-appium')
