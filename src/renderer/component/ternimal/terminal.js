@@ -108,6 +108,7 @@ class Terminal extends Component {
   }
 
   clearLog() {
+    logs = []
     this.setState({ log: [] })
   }
 

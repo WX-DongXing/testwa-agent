@@ -103,23 +103,22 @@ function addEventListener() {
       serveProcess = exec(command, { cwd: execPath, encoding: 'utf-8', maxBuffer: 5000 * 1024 })
     }
 
-    serveProcess.on('error', (error) => {
-      event.sender.send('service-log', `Error: ${error}`)
-    })
-
-    serveProcess.stdout.on('data', (stdout) => {
-      event.sender.send('service-log', stdout)
-    })
-
-    serveProcess.stderr.on('data', (stderr) => {
-      event.sender.send('service-log', stderr)
-    })
+    // add child process listeners
+    serveProcess.on('error', (error) => emitServiceLog(event, error))
+    serveProcess.stdout.on('data', (stdout) => emitServiceLog(event, stdout))
+    serveProcess.stderr.on('data', (stderr) => emitServiceLog(event, stderr))
   })
 
   /**
    * stop service event
    */
   ipcMain.on('stop-service', (event) => {
+    // remove listeners
+    serveProcess.removeAllListeners('error')
+    serveProcess.stdout.removeAllListeners('data')
+    serveProcess.stderr.removeAllListeners('data')
+
+    // kill child process
     serveProcess.kill()
     stopService()
       .then(() => {
@@ -154,6 +153,15 @@ async function stopWinService() {
  */
 async function stopService() {
   return is.windows ? stopWinService() : stopUnixService()
+}
+
+/**
+ * emit log function
+ * @param event
+ * @param target
+ */
+function emitServiceLog(event, target) {
+  event.sender.send('service-log', target)
 }
 
 /**
