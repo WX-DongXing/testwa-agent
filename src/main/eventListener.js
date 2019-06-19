@@ -121,28 +121,39 @@ function addEventListener() {
    */
   ipcMain.on('stop-service', (event) => {
     serveProcess.kill()
-    if (is.macos || is.linux) {
-      stopService()
-        .then(() => {
-          event.sender.send('service-log', '> > 服务关闭！')
-        })
-        .catch(e => {
-          console.log(e)
-        })
-    } else if (is.windows) {
-      console.log('Java stop')
-      event.sender.send('service-log', '> > 服务关闭！')
-    }
+    stopService()
+      .then(() => {
+        event.sender.send('service-log', '- - - > 服务已关闭！')
+      })
+      .catch(e => {
+        console.log(e)
+      })
   })
 
 }
 
 /**
- * kill service
+ * kill mac or linux platform service
  * @returns {Promise<any | void | string | Buffer>}
  */
+async function stopUnixService() {
+  return await execPromise('sh stop.sh', { cwd: execPath, encoding: 'utf-8'})
+}
+
+/**
+ * kill windows platform service
+ * @returns {Promise<any | void | string | Buffer>}
+ */
+async function stopWinService() {
+  return await execPromise('taskkill /F /IM "java.exe"', { cwd: execPath, encoding: 'utf-8'})
+}
+
+/**
+ * kill service
+ * @returns {Promise<any|void|string|Buffer>}
+ */
 async function stopService() {
- return await execPromise('sh stop.sh', { cwd: execPath, encoding: 'utf-8'})
+  return is.windows ? stopWinService() : stopUnixService()
 }
 
 /**
