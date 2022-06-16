@@ -49,7 +49,7 @@
     "@material-ui/core": "^1.5.1",
     "@material-ui/icons": "^2.0.3",
     "animejs": "^2.2.0",
-    "electron": "^2.0.8",
+    "electron": "^15.5.5",
     "electron-builder": "^20.11.1",
     "electron-devtools-installer": "^2.2.4",
     "electron-timber": "^0.5.1",
