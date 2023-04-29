@@ -54,7 +54,7 @@
     "electron-devtools-installer": "^2.2.4",
     "electron-timber": "^0.5.1",
     "electron-util": "^0.9.0",
-    "electron-webpack": "^2.0.1",
+    "electron-webpack": "^2.8.2",
     "lowdb": "^1.0.0",
     "node-sass": "^4.9.3",
     "normalize.css": "^8.0.0",
